@@ -1,41 +1,38 @@
 "use client"
 
-import { useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { motion, useInView } from "framer-motion"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { ExternalLink, Github } from "lucide-react"
+import { ExternalLink, Github, Loader2 } from "lucide-react"
+import { getPortfolio } from "@/sanity/lib/client"
+import { Portfolio as PortfolioType } from "@/sanity/types"
+import { urlFor } from "@/sanity/lib/image"
+import Link from "next/link"
 
 export default function Portfolio() {
+    const [portfolioData, setPortfolioData] = useState<PortfolioType[] | undefined>()
+    const [dataState, setDataState] = useState<"loading" | "loaded" | "error">("loading")
     const ref = useRef(null)
     const isInView = useInView(ref, { once: false, amount: 0.1 })
 
-    const projects = [
-        {
-            title: "E-commerce Platform",
-            description: "A modern e-commerce platform built with Next.js and Tailwind CSS.",
-            image: "/placeholder.svg?height=600&width=800",
-            tags: ["Next.js", "React", "Tailwind CSS"],
-            demoLink: "#",
-            githubLink: "#",
-        },
-        {
-            title: "Portfolio Website",
-            description: "A responsive portfolio website with smooth animations.",
-            image: "/placeholder.svg?height=600&width=800",
-            tags: ["React", "Framer Motion", "Tailwind CSS"],
-            demoLink: "#",
-            githubLink: "#",
-        },
-        {
-            title: "Task Management App",
-            description: "A task management application with drag and drop functionality.",
-            image: "/placeholder.svg?height=600&width=800",
-            tags: ["Next.js", "TypeScript", "Framer Motion"],
-            demoLink: "#",
-            githubLink: "#",
-        },
-    ]
+
+    useEffect(() => {
+        async function getPortfolios() {
+            try {
+                const response = await getPortfolio()
+                if (response) {
+                    setPortfolioData(response as PortfolioType[])
+                }
+                setDataState("loaded")
+            } catch (error) {
+                console.log(error)
+                setDataState('error')
+            }
+        }
+        getPortfolios()
+    }, [])
+
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -65,50 +62,79 @@ export default function Portfolio() {
                     <span className="gradient-text">Portfolio</span>
                 </motion.h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {projects.map((project, index) => (
-                        <motion.div
-                            key={index}
-                            variants={itemVariants}
-                            className="glass rounded-lg overflow-hidden"
-                            whileHover={{ y: -10, transition: { duration: 0.2 } }}
-                        >
-                            <div className="relative h-48 overflow-hidden">
-                                <Image
-                                    src={project.image || "/placeholder.svg"}
-                                    alt={project.title}
-                                    fill
-                                    className="object-cover transition-transform duration-500 hover:scale-110"
-                                />
-                            </div>
+                {
+                    dataState === 'loading' && (
+                        <div className="flex justify-center items-center h-96">
+                            <Loader2 className="size-20 animate-spin" />
+                        </div>
+                    )
+                }
 
-                            <div className="p-6">
-                                <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-                                <p className="text-muted-foreground mb-4">{project.description}</p>
+                {
+                    dataState === 'error' && (
+                        <div className="flex justify-center items-center h-96 text-destructive text-lg font-semibold">
+                            Error loading portfolio data
+                        </div>
+                    )
+                }
 
-                                <div className="flex flex-wrap gap-2 mb-4">
-                                    {project.tags.map((tag, tagIndex) => (
-                                        <span key={tagIndex} className="text-xs px-2 py-1 rounded-full bg-primary/10">
-                                            {tag}
-                                        </span>
-                                    ))}
+
+                {dataState === 'loaded' && portfolioData && portfolioData.length === 0 && (
+                    <div className="flex justify-center items-center h-96 text-muted-foreground text-lg font-semibold">
+                        No portfolio data available
+                    </div>
+                )}
+                {(dataState === 'loaded' && portfolioData) && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {portfolioData.map((project, index) => (
+                            <motion.div
+                                key={index}
+                                variants={itemVariants}
+                                className="rounded-lg overflow-hidden dark:bg-card bg-amber-100 "
+                                whileHover={{ y: -10, transition: { duration: 0.2 } }}
+                            >
+                                <div className="relative h-48 overflow-hidden">
+                                    <Image
+                                        src={project.image ? urlFor(project.image).auto('format').url() : "/placeholder.svg"}
+                                        alt={project.title as string}
+                                        fill
+                                        className="object-cover transition-transform duration-500 hover:scale-110"
+                                    />
                                 </div>
 
-                                <div className="flex gap-3">
-                                    <Button size="sm" variant="outline" className="flex items-center gap-1">
-                                        <ExternalLink className="h-4 w-4" />
-                                        Demo
-                                    </Button>
-                                    <Button size="sm" variant="outline" className="flex items-center gap-1">
-                                        <Github className="h-4 w-4" />
-                                        Code
-                                    </Button>
+                                <div className="p-6">
+                                    <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
+                                    <p className="text-muted-foreground mb-4">{project.description}</p>
+
+                                    <div className="flex flex-wrap gap-2 mb-4">
+                                        {project.technologies && project.technologies.map((tag, tagIndex) => (
+                                            <span key={tagIndex} className="text-xs px-2 py-1 rounded-full bg-primary/10">
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
+
+                                    <div className="flex gap-3">
+                                        <Button asChild size="sm" variant="outline" className="flex items-center gap-1">
+                                            <Link href={project.projectLink as string} target="_blank" rel="noopener noreferrer">
+                                                <ExternalLink className="h-4 w-4" />
+                                                Demo
+                                            </Link>
+                                        </Button>
+                                        <Button asChild size="sm" variant="outline" className="flex items-center gap-1">
+                                            <Link href={project.githubLink as string} target="_blank" rel="noopener noreferrer">
+                                                <Github className="h-4 w-4" />
+                                                Code
+                                            </Link>
+                                        </Button>
+                                    </div>
                                 </div>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
-            </motion.div>
-        </section>
+                            </motion.div>
+                        ))}
+                    </div>
+                )}
+
+
+            </motion.div></section>
     )
 }

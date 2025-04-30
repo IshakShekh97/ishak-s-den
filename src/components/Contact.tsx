@@ -113,7 +113,7 @@ export default function Contact() {
                                                     <label htmlFor="name" className="block text-sm font-medium mb-1">
                                                         Name
                                                     </label>
-                                                    <Input id="name" placeholder="Your name" name="name" />
+                                                    <Input required id="name" placeholder="Your name" name="name" />
                                                     <ValidationError prefix="Name" field="name" errors={state.errors} />
                                                 </motion.div>
 
@@ -121,7 +121,7 @@ export default function Contact() {
                                                     <label htmlFor="email" className="block text-sm font-medium mb-1">
                                                         Email
                                                     </label>
-                                                    <Input id="email" name="email" type="email" placeholder="Your email" />
+                                                    <Input required id="email" name="email" type="email" placeholder="Your email" />
                                                     <ValidationError prefix="Email" field="email" errors={state.errors} />
                                                 </motion.div>
 
@@ -129,7 +129,7 @@ export default function Contact() {
                                                     <label htmlFor="subject" className="block text-sm font-medium mb-1">
                                                         Subject
                                                     </label>
-                                                    <Input id="subject" name="subject" placeholder="Subject" />
+                                                    <Input required id="subject" name="subject" placeholder="Subject" />
                                                     <ValidationError prefix="Subject" field="subject" errors={state.errors} />
                                                 </motion.div>
 
@@ -137,7 +137,7 @@ export default function Contact() {
                                                     <label htmlFor="message" className="block text-sm font-medium mb-1">
                                                         Message
                                                     </label>
-                                                    <Textarea id="message" name="message" placeholder="Your message" rows={5} />
+                                                    <Textarea required id="message" name="message" placeholder="Your message" rows={5} />
                                                     <ValidationError prefix="Message" field="message" errors={state.errors} />
                                                 </motion.div>
 
@@ -146,7 +146,6 @@ export default function Contact() {
                                                         Send Message
                                                     </Button>
                                                 </motion.div>
-
                                                 <ValidationError errors={state.errors} />
                                             </form>
                                         </CardContent>
@@ -154,7 +153,6 @@ export default function Contact() {
                                 </motion.div>
                         )
                     }
-
                 </div>
             </div>
         </section>
