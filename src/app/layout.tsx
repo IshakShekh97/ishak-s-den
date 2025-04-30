@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${parkinsans.className} antialiased`}
+        className={`${parkinsans.className} antialiased dark:bg-black bg-amber-50`}
       >
         <ThemeProvider
           attribute={'class'}

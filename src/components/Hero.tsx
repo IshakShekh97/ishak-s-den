@@ -21,7 +21,9 @@ export default function Hero() {
 
     return (
         <section id="home" ref={ref} className="relative min-h-screen flex items-center section-padding pt-32 text-center">
-            <div className="absolute z-0 top-0 left-0 bottom-0 right-0">
+            <motion.div
+                style={{ y, opacity }}
+                className="absolute z-0 top-0 left-0 bottom-0 right-0">
                 <SparklesCore
                     id="tsparticlesfullpage"
                     background="transparent"
@@ -31,7 +33,7 @@ export default function Hero() {
                     className="w-full h-full !opacity-50 "
                     particleColor={theme === "dark" ? "#fff" : "#000"}
                 />
-            </div>
+            </motion.div>
 
             <motion.div className="max-w-3xl mx-auto relative z-20" style={{ y, opacity }}>
                 <motion.h1

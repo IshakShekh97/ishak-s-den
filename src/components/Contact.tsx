@@ -8,8 +8,10 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
 import { Mail, MapPin, Phone } from "lucide-react"
+import { useForm, ValidationError } from "@formspree/react";
 
 export default function Contact() {
+    const [state, handleSubmit] = useForm(process.env.NEXT_PUBLIC_CONTACT_FROM_ID!);
     const ref = useRef(null)
     const isInView = useInView(ref, { once: true, amount: 0.2 })
 
@@ -54,7 +56,7 @@ export default function Contact() {
     }
 
     return (
-        <section id="contact" className="py-20 bg-muted/50">
+        <section id="contact" className="py-20 bg-amber-100 dark:bg-muted">
             <div className="container px-4 md:px-6">
                 <motion.div
                     className="text-center mb-12"
@@ -89,48 +91,70 @@ export default function Contact() {
                             ))}
                         </div>
                     </motion.div>
+                    {
+                        state.succeeded ? (
+                            <motion.div variants={containerVariants} initial="hidden" animate={isInView ? "visible" : "hidden"}>
+                                <Card className="min-h-full flex flex-col items-center justify-center text-center">
+                                    <CardContent className="p-6 flex items-center justify-center flex-col text-center">
+                                        <span className="text-4xl mb-4">📬</span>
+                                        <h3 className="text-xl font-semibold mb-2">Thank you for reaching out!</h3>
+                                        <p className="text-muted-foreground text-center">
+                                            I have received your message and will contact you soon.
+                                        </p>
+                                    </CardContent>
+                                </Card>
+                            </motion.div>
+                        ) : (
+                                <motion.div variants={containerVariants} initial="hidden" animate={isInView ? "visible" : "hidden"}>
+                                    <Card>
+                                        <CardContent className="p-6">
+                                            <form onSubmit={handleSubmit} className="space-y-4">
+                                                <motion.div variants={itemVariants}>
+                                                    <label htmlFor="name" className="block text-sm font-medium mb-1">
+                                                        Name
+                                                    </label>
+                                                    <Input id="name" placeholder="Your name" name="name" />
+                                                    <ValidationError prefix="Name" field="name" errors={state.errors} />
+                                                </motion.div>
 
-                    <motion.div variants={containerVariants} initial="hidden" animate={isInView ? "visible" : "hidden"}>
-                        <Card>
-                            <CardContent className="p-6">
-                                <form className="space-y-4">
-                                    <motion.div variants={itemVariants}>
-                                        <label htmlFor="name" className="block text-sm font-medium mb-1">
-                                            Name
-                                        </label>
-                                        <Input id="name" placeholder="Your name" />
-                                    </motion.div>
+                                                <motion.div variants={itemVariants}>
+                                                    <label htmlFor="email" className="block text-sm font-medium mb-1">
+                                                        Email
+                                                    </label>
+                                                    <Input id="email" name="email" type="email" placeholder="Your email" />
+                                                    <ValidationError prefix="Email" field="email" errors={state.errors} />
+                                                </motion.div>
 
-                                    <motion.div variants={itemVariants}>
-                                        <label htmlFor="email" className="block text-sm font-medium mb-1">
-                                            Email
-                                        </label>
-                                        <Input id="email" type="email" placeholder="Your email" />
-                                    </motion.div>
+                                                <motion.div variants={itemVariants}>
+                                                    <label htmlFor="subject" className="block text-sm font-medium mb-1">
+                                                        Subject
+                                                    </label>
+                                                    <Input id="subject" name="subject" placeholder="Subject" />
+                                                    <ValidationError prefix="Subject" field="subject" errors={state.errors} />
+                                                </motion.div>
 
-                                    <motion.div variants={itemVariants}>
-                                        <label htmlFor="subject" className="block text-sm font-medium mb-1">
-                                            Subject
-                                        </label>
-                                        <Input id="subject" placeholder="Subject" />
-                                    </motion.div>
+                                                <motion.div variants={itemVariants}>
+                                                    <label htmlFor="message" className="block text-sm font-medium mb-1">
+                                                        Message
+                                                    </label>
+                                                    <Textarea id="message" name="message" placeholder="Your message" rows={5} />
+                                                    <ValidationError prefix="Message" field="message" errors={state.errors} />
+                                                </motion.div>
 
-                                    <motion.div variants={itemVariants}>
-                                        <label htmlFor="message" className="block text-sm font-medium mb-1">
-                                            Message
-                                        </label>
-                                        <Textarea id="message" placeholder="Your message" rows={5} />
-                                    </motion.div>
+                                                <motion.div variants={itemVariants}>
+                                                    <Button type="submit" disabled={state.submitting} className="w-full">
+                                                        Send Message
+                                                    </Button>
+                                                </motion.div>
 
-                                    <motion.div variants={itemVariants}>
-                                        <Button type="submit" className="w-full">
-                                            Send Message
-                                        </Button>
-                                    </motion.div>
-                                </form>
-                            </CardContent>
-                        </Card>
-                    </motion.div>
+                                                <ValidationError errors={state.errors} />
+                                            </form>
+                                        </CardContent>
+                                    </Card>
+                                </motion.div>
+                        )
+                    }
+
                 </div>
             </div>
         </section>
