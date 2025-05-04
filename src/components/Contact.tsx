@@ -31,7 +31,7 @@ export default function Contact() {
         {
             icon: <MapPin className="h-6 w-6 text-primary" />,
             title: "Location",
-            value: "Gujarat / West Bengal, India",
+            value: "Bodeli - Gujarat / Pandua - West Bengal, India",
             link: "#",
         },
     ]
