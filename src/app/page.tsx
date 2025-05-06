@@ -5,6 +5,7 @@ import Skills from "@/components/Skills"
 import Technologies from "@/components/Technologies"
 import Portfolio from "@/components/Portfolio"
 import Contact from "@/components/Contact"
+import Education from "@/components/Education"
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
         <Hero />
         <Skills />
         <Technologies />
+        <Education />
         <Portfolio />
         <Contact />
       </main>

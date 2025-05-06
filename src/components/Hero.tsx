@@ -22,6 +22,10 @@ export default function Hero() {
 
     return (
         <section id="home" ref={ref} className="relative min-h-screen flex items-center section-padding pt-32 text-center">
+            {/* <span className="absolute top-40 right-40 z-10 text-center text-lg bg-muted flex items-center justify-center px-4 py-2 rounded-full motion-translate-x-loop-[15%] motion-translate-y-loop-[0%] motion-delay-[3ms] motion-delay-[0ms]/translate motion-ease-in-out">
+                Ishak's Den
+            </span> */}
+
             <motion.div
                 style={{ y, opacity }}
                 className="absolute z-0 top-0 left-0 bottom-0 right-0">

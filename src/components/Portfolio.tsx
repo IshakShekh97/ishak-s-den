@@ -9,6 +9,7 @@ import { getPortfolio } from "@/sanity/lib/client"
 import { Portfolio as PortfolioType } from "@/sanity/types"
 import { urlFor } from "@/sanity/lib/image"
 import Link from "next/link"
+import { Skeleton } from "./ui/skeleton"
 
 export default function Portfolio() {
     const [portfolioData, setPortfolioData] = useState<PortfolioType[] | undefined>()
@@ -64,8 +65,34 @@ export default function Portfolio() {
 
                 {
                     dataState === 'loading' && (
-                        <div className="flex justify-center items-center h-96">
-                            <Loader2 className="size-20 animate-spin" />
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 my-10">
+                            {[1, 2, 3].map((_, index) => (
+                                <motion.div
+                                    key={index}
+                                    variants={itemVariants}
+                                    className="rounded-lg overflow-hidden dark:bg-card bg-amber-100 "
+                                    whileHover={{ y: -10, transition: { duration: 0.2 } }}
+                                >
+                                    <Skeleton className="relative h-48 " />
+                                    <div className="p-5">
+                                        <Skeleton className="h-5 w-full my-2" />
+
+                                        <Skeleton className="h-3 max-w-9/12 mb-2 mt-4" />
+                                        <Skeleton className="h-3 w-8/12 my-2" />
+
+                                        <div className="flex flex-wrap gap-2 my-4">
+                                            {[1, 2, 3].map((_, tagIndex) => (
+                                                <Skeleton key={tagIndex} className="h-4 w-16" />
+                                            ))}
+                                        </div>
+
+                                        <div className="flex gap-3">
+                                            <Skeleton className="h-8 w-24" />
+                                            <Skeleton className="h-8 w-24" />
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            ))}
                         </div>
                     )
                 }
@@ -135,6 +162,7 @@ export default function Portfolio() {
                 )}
 
 
-            </motion.div></section>
+            </motion.div>
+        </section>
     )
 }

@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -182,7 +181,6 @@
   --sidebar-ring: oklch(0.646 0.222 41.116);
 }
 
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -236,8 +234,10 @@
   }
 }
 
-
 .section-padding {
   @apply py-20 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto;
 }
 
+::selection {
+  @apply bg-amber-600 text-black;
+}
