@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Parkinsans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import MouseFollower from "@/components/MouseFollower";
 
 const parkinsans = Parkinsans({
   weight: ["400", "300", "500", "600", "700", "800"],
@@ -34,7 +35,8 @@ export default function RootLayout({
           enableSystem={true}
           disableTransitionOnChange
         >
-        {children}
+          <MouseFollower />
+          {children}
         </ThemeProvider>
       </body>
     </html>
