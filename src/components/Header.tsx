@@ -26,7 +26,7 @@ export default function Header() {
             animate={{ y: 0 }}
             transition={{ duration: 0.5 }}
         >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center py-4">
                     <motion.div
                         className="text-xl font-bold"
@@ -50,7 +50,7 @@ export default function Header() {
                         />
                     </motion.div>
 
-                    <nav className="hidden md:flex space-x-8">
+                    <nav className="hidden lg:flex space-x-8">
                         {navItems.map((item, index) => (
                             <motion.a
                                 key={item.name}
@@ -70,7 +70,7 @@ export default function Header() {
                     <div className="flex items-center space-x-4">
                         <ThemeSwitcher />
 
-                        <div className="md:hidden">
+                        <div className="lg:hidden">
                             <Button
                                 variant="ghost"
                                 size="icon"
@@ -88,7 +88,7 @@ export default function Header() {
             {/* Mobile menu */}
             {mobileMenuOpen && (
                 <motion.div
-                    className="md:hidden glass"
+                    className="lg:hidden glass"
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}

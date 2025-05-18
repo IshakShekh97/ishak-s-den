@@ -71,12 +71,14 @@ export default function Hero() {
                 >
                     <Button asChild size="lg" className="group">
                         <Link href={'#portfolio'} >
-                        View My Work
-                        <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                            View My Work
+                            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                         </Link>
                     </Button>
-                    <Button size="lg" variant="outline">
-                        Contact Me
+                    <Button asChild size="lg" variant="outline">
+                        <Link href={'#contact'} >
+                            Contact Me
+                        </Link>
                     </Button>
                 </motion.div>
             </motion.div>

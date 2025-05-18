@@ -56,8 +56,8 @@ export default function Contact() {
     }
 
     return (
-        <section id="contact" className="py-20 bg-amber-100 dark:bg-muted">
-            <div className="container px-4 md:px-6">
+        <section id="contact" className="bg-amber-100 dark:bg-muted section-padding mx-auto">
+            <div className="px-4 md:px-6">
                 <motion.div
                     className="text-center mb-12"
                     initial={{ opacity: 0, y: 20 }}
@@ -105,52 +105,52 @@ export default function Contact() {
                                 </Card>
                             </motion.div>
                         ) : (
-                                <motion.div variants={containerVariants} initial="hidden" animate={isInView ? "visible" : "hidden"}>
-                                    <Card>
-                                        <CardContent className="p-6">
-                                            <form onSubmit={handleSubmit} className="space-y-4">
-                                                <motion.div variants={itemVariants}>
-                                                    <label htmlFor="name" className="block text-sm font-medium mb-1">
-                                                        Name
-                                                    </label>
-                                                    <Input required id="name" placeholder="Your name" name="name" />
-                                                    <ValidationError prefix="Name" field="name" errors={state.errors} />
-                                                </motion.div>
+                            <motion.div variants={containerVariants} initial="hidden" animate={isInView ? "visible" : "hidden"}>
+                                <Card>
+                                    <CardContent className="p-6">
+                                        <form onSubmit={handleSubmit} className="space-y-4">
+                                            <motion.div variants={itemVariants}>
+                                                <label htmlFor="name" className="block text-sm font-medium mb-1">
+                                                    Name
+                                                </label>
+                                                <Input required id="name" placeholder="Your name" name="name" />
+                                                <ValidationError prefix="Name" field="name" errors={state.errors} />
+                                            </motion.div>
 
-                                                <motion.div variants={itemVariants}>
-                                                    <label htmlFor="email" className="block text-sm font-medium mb-1">
-                                                        Email
-                                                    </label>
-                                                    <Input required id="email" name="email" type="email" placeholder="Your email" />
-                                                    <ValidationError prefix="Email" field="email" errors={state.errors} />
-                                                </motion.div>
+                                            <motion.div variants={itemVariants}>
+                                                <label htmlFor="email" className="block text-sm font-medium mb-1">
+                                                    Email
+                                                </label>
+                                                <Input required id="email" name="email" type="email" placeholder="Your email" />
+                                                <ValidationError prefix="Email" field="email" errors={state.errors} />
+                                            </motion.div>
 
-                                                <motion.div variants={itemVariants}>
-                                                    <label htmlFor="subject" className="block text-sm font-medium mb-1">
-                                                        Subject
-                                                    </label>
-                                                    <Input required id="subject" name="subject" placeholder="Subject" />
-                                                    <ValidationError prefix="Subject" field="subject" errors={state.errors} />
-                                                </motion.div>
+                                            <motion.div variants={itemVariants}>
+                                                <label htmlFor="subject" className="block text-sm font-medium mb-1">
+                                                    Subject
+                                                </label>
+                                                <Input required id="subject" name="subject" placeholder="Subject" />
+                                                <ValidationError prefix="Subject" field="subject" errors={state.errors} />
+                                            </motion.div>
 
-                                                <motion.div variants={itemVariants}>
-                                                    <label htmlFor="message" className="block text-sm font-medium mb-1">
-                                                        Message
-                                                    </label>
-                                                    <Textarea required id="message" name="message" placeholder="Your message" rows={5} />
-                                                    <ValidationError prefix="Message" field="message" errors={state.errors} />
-                                                </motion.div>
+                                            <motion.div variants={itemVariants}>
+                                                <label htmlFor="message" className="block text-sm font-medium mb-1">
+                                                    Message
+                                                </label>
+                                                <Textarea required id="message" name="message" placeholder="Your message" rows={5} />
+                                                <ValidationError prefix="Message" field="message" errors={state.errors} />
+                                            </motion.div>
 
-                                                <motion.div variants={itemVariants}>
-                                                    <Button type="submit" disabled={state.submitting} className="w-full">
-                                                        Send Message
-                                                    </Button>
-                                                </motion.div>
-                                                <ValidationError errors={state.errors} />
-                                            </form>
-                                        </CardContent>
-                                    </Card>
-                                </motion.div>
+                                            <motion.div variants={itemVariants}>
+                                                <Button type="submit" disabled={state.submitting} className="w-full">
+                                                    Send Message
+                                                </Button>
+                                            </motion.div>
+                                            <ValidationError errors={state.errors} />
+                                        </form>
+                                    </CardContent>
+                                </Card>
+                            </motion.div>
                         )
                     }
                 </div>

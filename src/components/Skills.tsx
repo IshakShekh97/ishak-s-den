@@ -49,7 +49,7 @@ export default function Skills() {
                         <motion.div
                             key={index}
                             variants={itemVariants}
-                            className={cn('glass p-6 rounded-lg border-foreground/40 border',
+                            className={cn('glass p-6 rounded-lg bg-amber-100 dark:bg-muted border-foreground/40 border',
                                 (index === skills.length - 1 || index === skills.length - 2) ? "lg:col-span-3" : "lg:col-span-2",
                             )}
                             whileHover={{ y: -5, transition: { duration: 0.2 } }}
