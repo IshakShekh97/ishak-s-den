@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { Parkinsans } from "next/font/google";
-import "./globals.css";
+import { Poppins } from "next/font/google";
 import { ThemeProvider } from "@/components/provider/ThemeProvider";
 import SmoothScrollProvider from "@/components/provider/SmoothScrollProvider";
-import { SmoothCursor } from "@/components/ui/smooth-cursor";
+import { SmoothCursor } from "@/components/animated/smooth-cursor";
+import "./globals.css";
 
-const parkinsans = Parkinsans({
+const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["400", "300", "500", "600", "700", "800"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${parkinsans.className} antialiased dark:bg-black bg-amber-50`}
+        className={`${poppins.className} antialiased dark:bg-black bg-amber-50`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="hidden md:block">

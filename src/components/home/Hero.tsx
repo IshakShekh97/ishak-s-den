@@ -8,11 +8,19 @@ import {
   useMotionValue,
   AnimatePresence,
 } from "framer-motion";
-import { TextGenerateEffect } from "../ui/text-generate-effect";
-import FloatingOrbs from "../ui/floating-orbs";
-import MagneticButton from "../ui/magnetic-button";
-import ParticleSystem from "../ui/particle-system";
-import GradientBackground from "../ui/gradient-background";
+import { TextGenerateEffect } from "@/components/animated/text-generate-effect";
+import FloatingOrbs from "@/components/animated/floating-orbs";
+import MagneticButton from "@/components/animated/magnetic-button";
+import ParticleSystem from "@/components/animated/particle-system";
+import GradientBackground from "@/components/animated/gradient-background";
+import { Pacifico } from "next/font/google";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+
+const pacifico = Pacifico({
+  subsets: ["latin"],
+  weight: ["400"],
+});
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -203,23 +211,6 @@ export default function Hero() {
               duration={1.2}
             />
           </motion.div>
-
-          <motion.div
-            className="absolute inset-0 text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-center text-primary/15 blur-2xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 3, delay: 1.5 }}
-          >
-            Hi, I&apos;m Ishak Shekh
-          </motion.div>
-          <motion.div
-            className="absolute inset-0 text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-center text-accent/10 blur-3xl scale-110"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 4, delay: 2 }}
-          >
-            Hi, I&apos;m Ishak Shekh
-          </motion.div>
         </motion.div>
 
         <motion.div
@@ -227,7 +218,10 @@ export default function Hero() {
           variants={itemVariants}
         >
           <motion.p
-            className="text-lg md:text-xl lg:text-2xl text-muted-foreground/90 leading-relaxed font-light"
+            className={cn(
+              "text-lg md:text-xl lg:text-2xl text-muted-foreground/90 leading-relaxed font-light",
+              pacifico.className
+            )}
             style={{
               x: useTransform(mouseX, [-200, 200], [-3, 3]),
               y: useTransform(mouseY, [-200, 200], [-2, 2]),
@@ -253,7 +247,9 @@ export default function Hero() {
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
             >
               <MagneticButton variant="primary" strength={0.4}>
-                <span className="relative z-10">View My Work</span>
+                <Link href={"#portfolio"} className={`relative z-10 `}>
+                  View My Work
+                </Link>
               </MagneticButton>
             </motion.div>
 
@@ -263,7 +259,9 @@ export default function Hero() {
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
             >
               <MagneticButton variant="secondary" strength={0.4}>
-                <span className="relative z-10">Get In Touch</span>
+                <Link href={"#contact"} className={`relative z-10`}>
+                  Get In Touch
+                </Link>
               </MagneticButton>
             </motion.div>
           </motion.div>

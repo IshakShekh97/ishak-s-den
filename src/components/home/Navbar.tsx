@@ -11,7 +11,7 @@ import {
   Mail,
 } from "lucide-react";
 import Link from "next/link";
-import ThemeToggleButton from "../ui/theme-toggle-button";
+import ThemeToggleButton from "@/components/animated/theme-toggle-button";
 import {
   Tooltip,
   TooltipContent,
@@ -34,7 +34,7 @@ export function NavBar() {
   ];
 
   return (
-    <div className="fixed bottom-10 left-0 right-0 z-50 flex justify-center">
+    <div className="fixed bottom-2 left-0 right-0 z-50 flex justify-center">
       <TooltipProvider>
         <Dock iconMagnification={60} iconDistance={100}>
           {navItems.map((item) => (

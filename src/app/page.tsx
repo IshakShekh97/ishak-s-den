@@ -1,6 +1,7 @@
 "use client";
 // import Header from "@/components/home/Header";
 import Hero from "@/components/home/Hero";
+import About from "@/components/home/About";
 import Skills from "@/components/home/Skills";
 import Technologies from "@/components/home/Technologies";
 import Portfolio from "@/components/home/Portfolio";
@@ -19,6 +20,7 @@ export default function Home() {
           <NavBar />
           <main className="relative z-10">
             <Hero />
+            <About />
             <Skills />
             <Technologies />
             <Education />
