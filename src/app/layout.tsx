@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${poppins.className} antialiased dark:bg-black bg-amber-50`}
+        className={`${poppins.className} antialiased dark:bg-black bg-amber-50 relative`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="hidden md:block">
