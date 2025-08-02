@@ -1,13 +1,9 @@
 "use client";
 import Hero from "@/components/home/Hero";
 import About from "@/components/home/About";
-import Skills from "@/components/home/Skills";
-import Technologies from "@/components/home/Technologies";
-import Contact from "@/components/home/Contact";
-import Education from "@/components/home/Education";
+import CTA from "@/components/home/CTA";
 import Projects from "@/components/home/Projects";
-import { NavBar } from "@/components/home/Navbar";
-import { usePreloader } from "@/components/PreLoader";
+import TechStack from "@/components/home/TechStack";
 import { VelocityScroll } from "@/components/animated/scroll-based-velocity";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
@@ -17,28 +13,20 @@ import { ScrollProgress } from "@/components/scroll-progress";
 import Speciality from "@/components/home/Speciality";
 
 export default function Home() {
-  const [isLoading, Preloader] = usePreloader();
-
   return (
     <>
-      <Preloader />
-      {!isLoading && (
-        <div className="relative min-h-screen w-full overflow-hidden">
-          <ScrollProgress className="h-[2px] !rounded-full" />
-          <NavBar />
-          <main className="relative z-10">
-            <Hero />
-            <SeparationSection />
-            <About />
-            <Projects />
-            <Speciality />
-            <Skills />
-            <Technologies />
-            <Education />
-            <Contact />
-          </main>
-        </div>
-      )}
+      <div className="relative min-h-screen w-full overflow-hidden">
+        <ScrollProgress className="h-[2px] !rounded-full" />
+        <main className="relative z-10">
+          <Hero />
+          <SeparationSection />
+          <About />
+          <Projects />
+          <TechStack />
+          <Speciality />
+          <CTA />
+        </main>
+      </div>
     </>
   );
 }

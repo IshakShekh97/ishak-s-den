@@ -2,14 +2,7 @@
 
 import React from "react";
 import { Dock, DockIcon } from "@/components/dock";
-import {
-  Home,
-  BadgePercent,
-  Atom,
-  GraduationCap,
-  FolderKanban,
-  Mail,
-} from "lucide-react";
+import { Home, FolderKanban, Mail, User } from "lucide-react";
 import Link from "next/link";
 import ThemeToggleButton from "@/components/animated/theme-toggle-button";
 import {
@@ -20,19 +13,19 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "../ui/button";
+import { usePathname } from "next/navigation";
 
 export type IconProps = React.HTMLAttributes<SVGElement>;
 
 export function NavBar() {
   const navItems = [
-    { name: "Home", href: "#home", icon: Home },
-    { name: "Skills", href: "#skills", icon: BadgePercent },
-    { name: "Technologies", href: "#technologies", icon: Atom },
-    { name: "Education", href: "#education", icon: GraduationCap },
-    { name: "Portfolio", href: "#portfolio", icon: FolderKanban },
-    { name: "Contact", href: "#contact", icon: Mail },
+    { name: "Home", href: "/", icon: Home },
+    { name: "About", href: "/about", icon: User },
+    { name: "Projects", href: "/projects", icon: FolderKanban },
+    { name: "Contact", href: "/contact", icon: Mail },
   ];
 
+  const pathName = usePathname();
   return (
     <div className="fixed bottom-2 left-0 right-0 z-50 flex justify-center">
       <TooltipProvider>
@@ -45,8 +38,11 @@ export function NavBar() {
                     href={item.href}
                     aria-label={item.name}
                     className={cn(
-                      buttonVariants({ variant: "ghost", size: "icon" }),
-                      "size-12 rounded-full"
+                      buttonVariants({ size: "icon" }),
+                      "size-10 rounded-full",
+                      pathName === item.href
+                        ? "bg-primary text-primary-foreground"
+                        : "text-muted-foreground bg-secondary hover:bg-secondary/50 dark:hover:bg-secondary/50"
                     )}
                   >
                     <item.icon className="size-4" />

@@ -42,6 +42,7 @@ interface MagneticButtonProps {
   asChild?: boolean;
   variant?: VariantProps<typeof magneticButtonVariants>["variant"];
   size?: VariantProps<typeof magneticButtonVariants>["size"];
+  icon?: React.ReactNode;
 }
 
 function MagneticButton({
@@ -52,6 +53,7 @@ function MagneticButton({
   variant = "primary",
   size = "default",
   asChild = false,
+  icon,
 }: MagneticButtonProps) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -109,7 +111,7 @@ function MagneticButton({
   if (asChild) {
     return (
       <Slot className={baseClassName} onClick={onClick} {...motionProps}>
-        {children}
+        {children} {icon}
       </Slot>
     );
   }
@@ -120,8 +122,9 @@ function MagneticButton({
         style={{
           transform: "translateZ(20px)",
         }}
+        className="flex items-center  gap-2"
       >
-        {children}
+        {children} {icon}
       </motion.span>
     </motion.button>
   );

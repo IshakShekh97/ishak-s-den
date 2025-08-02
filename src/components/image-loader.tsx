@@ -252,7 +252,7 @@ export function ImageLoader({
 
   return (
     <div
-      className={cn("relative overflow-hidden rounded-lg", className)}
+      className={cn("relative overflow-hidden", className)}
       style={containerStyle}
       role="img"
       aria-label={alt}
@@ -285,7 +285,7 @@ export function ImageLoader({
           onLoad={handleLoad}
           onError={handleError}
           className={cn(
-            "absolute inset-0 w-full h-full transition-opacity duration-500",
+            "absolute inset-0 w-full h-full object-cover transition-opacity duration-500",
             isLoaded ? "opacity-100" : "opacity-0"
           )}
           style={{ objectFit }}

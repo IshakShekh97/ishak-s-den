@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import { ThemeProvider } from "@/components/provider/ThemeProvider";
-import SmoothScrollProvider from "@/components/provider/SmoothScrollProvider";
-import { SmoothCursor } from "@/components/animated/smooth-cursor";
 import "./globals.css";
+import ProviderWrapper from "@/components/provider/ProviderWrapper";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -31,12 +29,7 @@ export default function RootLayout({
       <body
         className={`${poppins.className} antialiased dark:bg-black bg-amber-50 relative`}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="hidden md:block">
-            <SmoothCursor />
-          </div>
-          <SmoothScrollProvider>{children}</SmoothScrollProvider>
-        </ThemeProvider>
+        <ProviderWrapper>{children}</ProviderWrapper>
       </body>
     </html>
   );

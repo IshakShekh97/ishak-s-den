@@ -197,18 +197,18 @@ const ProjectCard = ({
         <div
           className={`rounded-2xl overflow-hidden relative aspect-video transition-all duration-500 group-hover:scale-[1.02]`}
         >
-          <div className="w-full h-full rounded-3xl overflow-hidden">
-            <ImageLoader
-              src={
-                project.image
-                  ? urlFor(project.image).auto("format").url()
-                  : "/placeholder.svg"
-              }
-              alt={project.title as string}
-              width={750}
-              height={450}
-            />
-          </div>
+          <ImageLoader
+            src={
+              project.image
+                ? urlFor(project.image).auto("format").url()
+                : "/placeholder.svg"
+            }
+            alt={project.title as string}
+            className="w-full h-full rounded-2xl"
+            objectFit="cover"
+            width="100%"
+            height="100%"
+          />
         </div>
       </Link>
 
