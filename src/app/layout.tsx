@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import ProviderWrapper from "@/components/provider/ProviderWrapper";
 
-const poppins = Poppins({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${poppins.className} antialiased dark:bg-black bg-amber-50 relative`}
+        className={`${spaceGrotesk.className} antialiased dark:bg-black bg-amber-50 relative`}
       >
         <ProviderWrapper>{children}</ProviderWrapper>
       </body>

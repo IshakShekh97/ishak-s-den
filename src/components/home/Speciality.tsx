@@ -163,7 +163,7 @@ const ServiceCard = ({
       <div
         className={cn(
           "relative rounded-2xl px-4 pt-4 pb-4 text-sm h-full",
-          "bg-secondary/50 ring-border ring hover:bg-secondary/70 transition-colors duration-300",
+          "bg-secondary/50 ring-border ring hover:bg-secondary/70  hover:-translate-y-4 shadow-sm hover:shadow-lg transition-all duration-500 ease-in-out hover:scale-105",
           service.cornerStyle
         )}
       >

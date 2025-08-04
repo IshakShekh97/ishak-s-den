@@ -16,17 +16,14 @@ interface FlipTextProps {
   className?: string;
 }
 
-const FlipLink: React.FC<FlipLinkProps> = ({ children, href, className }) => {
+const FlipLink: React.FC<FlipLinkProps> = ({ children, href }) => {
   return (
     <motion.a
       initial="initial"
       whileHover="hovered"
       target="_blank"
       href={href}
-      className={cn(
-        "relative block overflow-hidden whitespace-nowrap font-semibold",
-        className
-      )}
+      className="relative block overflow-hidden whitespace-nowrap text-4xl font-semibold uppercase dark:text-white/90 sm:text-7xl md:text-8xl "
       style={{
         lineHeight: 0.75,
       }}

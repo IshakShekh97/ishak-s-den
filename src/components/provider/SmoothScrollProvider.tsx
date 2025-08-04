@@ -9,8 +9,7 @@ const SmoothScrollProvider = ({ children }: { children: React.ReactNode }) => {
       duration: 1,
       smoothWheel: true,
       syncTouch: true,
-      syncTouchLerp: 1,
-      touchMultiplier: 1.1,
+      syncTouchLerp: 0.7,
     });
 
     function raf(time: number) {
