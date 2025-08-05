@@ -62,7 +62,7 @@ const ProjectsPage = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             <TextReveal
-              text="Featured projects showcasing my expertise and the achieved results."
+              text="A selection of featured projects that highlight my expertise and results."
               className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl"
               delay={0.6}
               duration={0.8}
