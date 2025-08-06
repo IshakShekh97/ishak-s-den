@@ -1,0 +1,163 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+enum TechnologyType {
+  // Frontend
+  REACT
+  NEXTJS
+  VUE
+  ANGULAR
+  SVELTE
+  HTML
+  CSS
+  JAVASCRIPT
+  TYPESCRIPT
+  TAILWIND
+  BOOTSTRAP
+  SASS
+
+  // Backend
+  NODEJS
+  EXPRESS
+  NESTJS
+  PYTHON
+  DJANGO
+  FLASK
+  FASTAPI
+  JAVA
+  SPRING
+  CSHARP
+  DOTNET
+  PHP
+  LARAVEL
+  RUBY
+  RAILS
+  GO
+  RUST
+
+  // Databases
+  MYSQL
+  POSTGRESQL
+  MONGODB
+  REDIS
+  SQLITE
+  PRISMA
+  SUPABASE
+  FIREBASE
+
+  // Mobile
+  REACT_NATIVE
+  FLUTTER
+  SWIFT
+  KOTLIN
+  IONIC
+
+  // Cloud & DevOps
+  AWS
+  AZURE
+  GCP
+  DOCKER
+  KUBERNETES
+  VERCEL
+  NETLIFY
+  HEROKU
+
+  // Tools & Others
+  GIT
+  GITHUB
+  GITLAB
+  FIGMA
+  PHOTOSHOP
+  ILLUSTRATOR
+  WEBPACK
+  VITE
+  ESLINT
+  PRETTIER
+}
+
+model Project {
+  id           Int      @id @default(autoincrement())
+  order        Int // Manual order for projects
+  isFeatured   Boolean  @default(false)
+  title        String
+  slug         String   @unique
+  creationYear Int
+  coverImage   String // Store image URL or path
+  role         String // My role in the project
+  client       String
+  overview     String // Brief summary (mapped from 'text' type)
+  githubLink   String?
+  liveLink     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  designScreenshots DesignScreenshot[]
+  techStack         ProjectTech[]
+  features          ProjectFeature[]
+  tags              ProjectTag[]
+}
+
+model DesignScreenshot {
+  id        Int      @id @default(autoincrement())
+  projectId Int
+  image     String // Image URL or path
+  title     String // Title/Caption
+  createdAt DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model Technology {
+  id        Int            @id @default(autoincrement())
+  name      TechnologyType @unique
+  createdAt DateTime       @default(now())
+
+  projects ProjectTech[]
+}
+
+model ProjectTech {
+  id           Int @id @default(autoincrement())
+  projectId    Int
+  technologyId Int
+
+  project    Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  technology Technology @relation(fields: [technologyId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, technologyId])
+}
+
+model ProjectFeature {
+  id          Int      @id @default(autoincrement())
+  projectId   Int
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model Tag {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+
+  projects ProjectTag[]
+}
+
+model ProjectTag {
+  id        Int @id @default(autoincrement())
+  projectId Int
+  tagId     Int
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, tagId])
+}
