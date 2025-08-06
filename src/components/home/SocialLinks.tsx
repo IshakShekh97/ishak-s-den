@@ -36,7 +36,7 @@ export function SocialLinks() {
               <section className="h-full">
                 <section className="grid place-content-center gap-6 px-8 py-10 text-black">
                   <div className="group flex items-center justify-center gap-2">
-                    <FaLinkedinIn className="group-hover:bg-primary transition-all duration-500 ease-in-out size-10 sm:size-16 md:size-20 rounded-lg p-2 bg-secondary text-foreground" />
+                    <FaLinkedinIn className="group-hover:bg-blue-500 group-hover:text-white transition-all duration-500 ease-in-out size-10 sm:size-16 md:size-20 rounded-lg p-2 bg-secondary text-foreground" />
                     <FlipLink href="https://www.linkedin.com/in/ishak-shekh/">
                       Linkedin
                     </FlipLink>
@@ -45,10 +45,10 @@ export function SocialLinks() {
                     <FlipLink href="https://x.com/Ishak_Shekh_">
                       Twitter
                     </FlipLink>
-                    <FaXTwitter className="group-hover:bg-primary transition-all duration-500 ease-in-out size-10 sm:size-16 md:size-20 rounded-lg p-2 bg-secondary text-foreground" />
+                    <FaXTwitter className="group-hover:bg-black group-hover:border-white group-hover:border group-hover:text-white transition-all duration-500 ease-in-out size-10 sm:size-16 md:size-20 rounded-lg p-2 bg-secondary text-foreground" />
                   </div>
                   <div className="group flex items-center justify-center gap-2">
-                    <FaGithub className="group-hover:bg-primary transition-all duration-500 ease-in-out size-10 sm:size-16 md:size-20 rounded-lg p-2 bg-secondary text-foreground" />
+                    <FaGithub className="group-hover:bg-white group-hover:border group-hover:border-black group-hover:text-black transition-all duration-500 ease-in-out size-10 sm:size-16 md:size-20 rounded-lg p-2 bg-secondary text-foreground" />
                     <FlipLink href="https://github.com/IshakShekh97">
                       Github
                     </FlipLink>
@@ -57,7 +57,7 @@ export function SocialLinks() {
                     <FlipLink href="https://www.instagram.com/ishak_shekh_">
                       Instagram
                     </FlipLink>
-                    <FaInstagram className="group-hover:bg-primary transition-all duration-500 ease-in-out size-10 sm:size-16 md:size-20 rounded-lg p-2 bg-secondary text-foreground" />
+                    <FaInstagram className="group-hover:bg-primary group-hover:text-white transition-all duration-500 ease-in-out size-10 sm:size-16 md:size-20 rounded-lg p-2 bg-secondary text-foreground" />
                   </div>
                 </section>
               </section>
