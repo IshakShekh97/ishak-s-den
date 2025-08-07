@@ -18,8 +18,11 @@ import Link from "next/link";
 import { signUpSchema, SignUpSchemaType } from "@/lib/zodSchemas";
 import { useState } from "react";
 import { SignUp } from "@/actions/auth.action";
+import { useRouter } from "next/navigation";
 
 export default function SignUpPage() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const form = useForm<SignUpSchemaType>({
@@ -33,6 +36,7 @@ export default function SignUpPage() {
   });
 
   async function onSubmit(values: SignUpSchemaType) {
+    setIsLoading(true);
     try {
       const response = await SignUp({
         email: values.email,
@@ -40,12 +44,15 @@ export default function SignUpPage() {
         password: values.password,
       });
       if (response.success) {
-        console.log(response.message);
+        console.log("Sign Up Success:", response);
+        router.push("/sign-in");
       } else {
         console.log(response.message);
       }
     } catch (error) {
       console.error("Sign Up Error:", error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -148,7 +155,7 @@ export default function SignUpPage() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">
+            <Button disabled={isLoading} type="submit" className="w-full">
               Sign Up
             </Button>
           </form>
@@ -159,7 +166,7 @@ export default function SignUpPage() {
             href="/sign-in"
             className="text-primary underline hover:opacity-80"
           >
-            Sign In
+            {isLoading ? "Signing Up..." : "Sign Up"}
           </Link>
         </div>
       </div>

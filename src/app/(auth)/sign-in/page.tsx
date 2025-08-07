@@ -17,8 +17,12 @@ import Link from "next/link";
 
 import { signInSchema, SignInSchemaType } from "@/lib/zodSchemas";
 import { useState } from "react";
+import { SignIn } from "@/actions/auth.action";
+import { useRouter } from "next/navigation";
 
 export default function SignInPage() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const form = useForm<SignInSchemaType>({
     resolver: zodResolver(signInSchema),
@@ -28,9 +32,24 @@ export default function SignInPage() {
     },
   });
 
-  function onSubmit(values: SignInSchemaType) {
-    // TODO: handle sign in
-    console.log(values);
+  async function onSubmit(values: SignInSchemaType) {
+    setIsLoading(true);
+    try {
+      const response = await SignIn({
+        email: values.email,
+        password: values.password,
+      });
+
+      if (response.success) {
+        router.push("/dashboard");
+      } else {
+        console.log(response.message);
+      }
+    } catch (error) {
+      console.error("Sign in error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -84,8 +103,8 @@ export default function SignInPage() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">
-              Sign In
+            <Button disabled={isLoading} type="submit" className="w-full">
+              {isLoading ? "Signing In..." : "Sign In"}
             </Button>
           </form>
         </Form>
