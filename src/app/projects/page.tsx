@@ -1,39 +1,10 @@
 "use client";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { getPortfolio } from "@/sanity/lib/client";
-import { Portfolio as PortfolioType } from "@/sanity/types";
 import React from "react";
-import { cn } from "@/lib/utils";
 import { Code } from "lucide-react";
 import TextReveal, { TextRevealChars } from "@/components/animated/text-reveal";
-import { Skeleton } from "@/components/ui/skeleton";
-import { ProjectCard } from "@/components/ProjectCard";
 
 const ProjectsPage = () => {
-  const [portfolioData, setPortfolioData] = useState<
-    PortfolioType[] | undefined
-  >();
-  const [dataState, setDataState] = useState<"loading" | "loaded" | "error">(
-    "loading"
-  );
-
-  useEffect(() => {
-    async function getPortfolios() {
-      try {
-        const response = await getPortfolio();
-        if (response) {
-          setPortfolioData(response as PortfolioType[]);
-        }
-        setDataState("loaded");
-      } catch (error) {
-        console.log(error);
-        setDataState("error");
-      }
-    }
-    getPortfolios();
-  }, []);
-
   return (
     <section id="projects" className="relative py-20 bg-background">
       <div className="container mx-auto px-4">
@@ -68,8 +39,7 @@ const ProjectsPage = () => {
               duration={0.8}
             />
 
-            {/* Projects Display */}
-            {dataState == "loading" && (
+            {/* {dataState == "loading" && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-16">
                 {[1, 2, 3, 4].map((_, index) => (
                   <motion.div
@@ -141,7 +111,7 @@ const ProjectsPage = () => {
                   />
                 ))}
               </div>
-            )}
+            )} */}
           </motion.div>
         </div>
       </div>

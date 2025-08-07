@@ -1,163 +1,69 @@
+
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./dev.db"
+  url      = env("DATABASE_URL")
 }
 
-enum TechnologyType {
-  // Frontend
-  REACT
-  NEXTJS
-  VUE
-  ANGULAR
-  SVELTE
-  HTML
-  CSS
-  JAVASCRIPT
-  TYPESCRIPT
-  TAILWIND
-  BOOTSTRAP
-  SASS
+model User {
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  sessions      Session[]
+  accounts      Account[]
 
-  // Backend
-  NODEJS
-  EXPRESS
-  NESTJS
-  PYTHON
-  DJANGO
-  FLASK
-  FASTAPI
-  JAVA
-  SPRING
-  CSHARP
-  DOTNET
-  PHP
-  LARAVEL
-  RUBY
-  RAILS
-  GO
-  RUST
-
-  // Databases
-  MYSQL
-  POSTGRESQL
-  MONGODB
-  REDIS
-  SQLITE
-  PRISMA
-  SUPABASE
-  FIREBASE
-
-  // Mobile
-  REACT_NATIVE
-  FLUTTER
-  SWIFT
-  KOTLIN
-  IONIC
-
-  // Cloud & DevOps
-  AWS
-  AZURE
-  GCP
-  DOCKER
-  KUBERNETES
-  VERCEL
-  NETLIFY
-  HEROKU
-
-  // Tools & Others
-  GIT
-  GITHUB
-  GITLAB
-  FIGMA
-  PHOTOSHOP
-  ILLUSTRATOR
-  WEBPACK
-  VITE
-  ESLINT
-  PRETTIER
+  @@unique([email])
+  @@map("user")
 }
 
-model Project {
-  id           Int      @id @default(autoincrement())
-  order        Int // Manual order for projects
-  isFeatured   Boolean  @default(false)
-  title        String
-  slug         String   @unique
-  creationYear Int
-  coverImage   String // Store image URL or path
-  role         String // My role in the project
-  client       String
-  overview     String // Brief summary (mapped from 'text' type)
-  githubLink   String?
-  liveLink     String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  // Relations
-  designScreenshots DesignScreenshot[]
-  techStack         ProjectTech[]
-  features          ProjectFeature[]
-  tags              ProjectTag[]
+  @@unique([token])
+  @@map("session")
 }
 
-model DesignScreenshot {
-  id        Int      @id @default(autoincrement())
-  projectId Int
-  image     String // Image URL or path
-  title     String // Title/Caption
-  createdAt DateTime @default(now())
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
 
-  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  @@map("account")
 }
 
-model Technology {
-  id        Int            @id @default(autoincrement())
-  name      TechnologyType @unique
-  createdAt DateTime       @default(now())
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
 
-  projects ProjectTech[]
-}
-
-model ProjectTech {
-  id           Int @id @default(autoincrement())
-  projectId    Int
-  technologyId Int
-
-  project    Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  technology Technology @relation(fields: [technologyId], references: [id], onDelete: Cascade)
-
-  @@unique([projectId, technologyId])
-}
-
-model ProjectFeature {
-  id          Int      @id @default(autoincrement())
-  projectId   Int
-  title       String
-  description String
-  createdAt   DateTime @default(now())
-
-  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-}
-
-model Tag {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
-  createdAt DateTime @default(now())
-
-  projects ProjectTag[]
-}
-
-model ProjectTag {
-  id        Int @id @default(autoincrement())
-  projectId Int
-  tagId     Int
-
-  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
-
-  @@unique([projectId, tagId])
+  @@map("verification")
 }
