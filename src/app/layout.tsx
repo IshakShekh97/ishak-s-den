@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import ProviderWrapper from "@/components/provider/ProviderWrapper";
+import { ScrollProgress } from "@/components/scroll-progress";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -29,6 +30,7 @@ export default function RootLayout({
       <body
         className={`${spaceGrotesk.className} antialiased dark:bg-black bg-amber-50 relative`}
       >
+        <ScrollProgress className="h-[2px] !rounded-full" />
         <ProviderWrapper>{children}</ProviderWrapper>
       </body>
     </html>

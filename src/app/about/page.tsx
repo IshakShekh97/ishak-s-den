@@ -8,7 +8,6 @@ import { TextGenerateEffect } from "@/components/animated/text-generate-effect";
 import { VelocityScroll } from "@/components/animated/scroll-based-velocity";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { Footer } from "@/components/Footer";
-import { NavBar } from "@/components/home/Navbar";
 import {
   SiReact,
   SiNextdotjs,
@@ -105,8 +104,6 @@ const page = () => {
   return (
     <>
       <ScrollProgress className="h-[2px] !rounded-full" />
-      <NavBar />
-
       <div className="relative min-h-screen w-full overflow-hidden bg-background">
         <main className="relative z-10">
           {/* Hero Section */}

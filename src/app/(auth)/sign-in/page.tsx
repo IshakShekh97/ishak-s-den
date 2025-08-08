@@ -19,6 +19,7 @@ import { signInSchema, SignInSchemaType } from "@/lib/zodSchemas";
 import { useState } from "react";
 import { SignIn } from "@/actions/auth.action";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function SignInPage() {
   const router = useRouter();
@@ -41,8 +42,10 @@ export default function SignInPage() {
       });
 
       if (response.success) {
+        toast.success(response.message);
         router.push("/dashboard");
       } else {
+        toast.error(response.message);
         console.log(response.message);
       }
     } catch (error) {

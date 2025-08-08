@@ -85,7 +85,7 @@ export function NavBar() {
           )}
 
           <DockIcon>
-            <ThemeToggleButton start="bottom-right" variant="circle" />
+            <ThemeToggleButton start="bottom-right" variant="polygon" />
           </DockIcon>
         </Dock>
       </TooltipProvider>

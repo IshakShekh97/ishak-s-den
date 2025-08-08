@@ -6,10 +6,12 @@ const SmoothScrollProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const lenisInstance = new lenis({
       lerp: 0.7,
-      duration: 1,
+      duration: 1.4,
       smoothWheel: true,
       syncTouch: true,
-      syncTouchLerp: 0.7,
+      syncTouchLerp: 0.5,
+      touchInertiaExponent: 0.8,
+      touchMultiplier: 2,
     });
 
     function raf(time: number) {

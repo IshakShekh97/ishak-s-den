@@ -4,6 +4,8 @@ import { usePreloader } from "@/components/PreLoader";
 import SmoothScrollProvider from "./SmoothScrollProvider";
 import { ThemeProvider } from "./ThemeProvider";
 import { NavBar } from "../home/Navbar";
+import { Toaster } from "sonner";
+import { SmoothCursor } from "../animated/smooth-cursor";
 
 const ProviderWrapper = ({ children }: { children?: React.ReactNode }) => {
   const [isLoading, Preloader] = usePreloader();
@@ -16,6 +18,7 @@ const ProviderWrapper = ({ children }: { children?: React.ReactNode }) => {
           <div className="hidden md:block">{/* <SmoothCursor /> */}</div>
           <NavBar />
           {children}
+          <Toaster />
         </SmoothScrollProvider>
       )}
     </ThemeProvider>

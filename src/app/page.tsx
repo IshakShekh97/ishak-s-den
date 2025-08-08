@@ -4,7 +4,6 @@ import About from "@/components/home/About";
 import CTA from "@/components/home/CTA";
 import Projects from "@/components/home/Projects";
 import TechStack from "@/components/home/TechStack";
-import { ScrollProgress } from "@/components/scroll-progress";
 import Speciality from "@/components/home/Speciality";
 import { Footer } from "@/components/Footer";
 import { SeparationSection } from "@/components/home/ScrollSeprator";
@@ -14,7 +13,6 @@ export default function Home() {
   return (
     <>
       <div className="relative min-h-screen w-full overflow-hidden">
-        <ScrollProgress className="h-[2px] !rounded-full" />
         <main className="relative z-10">
           <Hero />
           <SeparationSection />

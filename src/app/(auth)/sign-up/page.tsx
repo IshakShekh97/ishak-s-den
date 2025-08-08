@@ -19,6 +19,7 @@ import { signUpSchema, SignUpSchemaType } from "@/lib/zodSchemas";
 import { useState } from "react";
 import { SignUp } from "@/actions/auth.action";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -44,10 +45,10 @@ export default function SignUpPage() {
         password: values.password,
       });
       if (response.success) {
-        console.log("Sign Up Success:", response);
-        router.push("/sign-in");
+        toast.success(response.message);
+        router.push("/dashboard");
       } else {
-        console.log(response.message);
+        toast.error(response.message);
       }
     } catch (error) {
       console.error("Sign Up Error:", error);

@@ -23,5 +23,80 @@ export const signInSchema = z.object({
     .min(8, { message: "Password must be at least 8 characters." }),
 });
 
-export type SignInSchemaType = z.infer<typeof signInSchema>;
 export type SignUpSchemaType = z.infer<typeof signUpSchema>;
+export type SignInSchemaType = z.infer<typeof signInSchema>;
+
+// Project schema
+export const createProjectSchema = z.object({
+  title: z.string().min(1, { message: "Title is required." }),
+  role: z.string().min(1, { message: "Role is required." }),
+  client: z.string().min(1, { message: "Client is required." }),
+  overview: z.string().optional(),
+  year: z
+    .number()
+    .min(1900)
+    .max(new Date().getFullYear() + 5, {
+      message: "Please enter a valid year.",
+    }),
+  coverImage: z
+    .instanceof(File)
+    .refine((file) => file.size > 0, {
+      message: "Cover image is required.",
+    })
+    .refine((file) => file.size <= 5 * 1024 * 1024, {
+      message: "Cover image must be less than 5MB.",
+    })
+    .refine((file) => file.type.startsWith("image/"), {
+      message: "Cover image must be an image file.",
+    }),
+  techStack: z.array(z.string()).min(1, {
+    message: "At least one technology is required.",
+  }),
+  features: z
+    .array(
+      z.object({
+        title: z.string().min(1, { message: "Feature title is required." }),
+        description: z
+          .string()
+          .min(1, { message: "Feature description is required." }),
+      })
+    )
+    .default([]),
+  tags: z.array(z.string()).min(1, {
+    message: "At least one tag is required.",
+  }),
+  isFeatures: z.boolean().default(false),
+  order: z.number().min(0).default(0),
+  githubLink: z
+    .string()
+    .optional()
+    .refine(
+      (val) => {
+        if (!val || val === "") return true;
+        try {
+          new URL(val);
+          return true;
+        } catch {
+          return false;
+        }
+      },
+      { message: "GitHub link must be a valid URL." }
+    ),
+  liveLink: z
+    .string()
+    .optional()
+    .refine(
+      (val) => {
+        if (!val || val === "") return true;
+        try {
+          new URL(val);
+          return true;
+        } catch {
+          return false;
+        }
+      },
+      { message: "Live link must be a valid URL." }
+    ),
+});
+
+export type CreateProjectSchemaType = z.infer<typeof createProjectSchema>;
