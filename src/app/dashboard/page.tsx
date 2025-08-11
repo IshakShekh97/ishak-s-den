@@ -1,9 +1,11 @@
 import CreateProjectForm from "@/components/form/CreateProjectForm";
+import EditProjectForm from "@/components/form/EditProjectForm";
 import ProjectOrderManager from "@/components/ProjectOrderManager";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { getSession } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { headers } from "next/headers";
@@ -16,6 +18,7 @@ import {
   Calendar,
   User,
   Building,
+  Edit,
 } from "lucide-react";
 
 type Project = {
@@ -96,9 +99,19 @@ const ProjectCard = ({ project }: { project: Project }) => {
               </div>
             </div>
           </div>
-          <Badge variant="outline" className="ml-2">
-            #{project.order}
-          </Badge>
+          <div className="flex items-center gap-2">
+            <Badge variant="outline" className="ml-2">
+              #{project.order}
+            </Badge>
+            <EditProjectForm
+              projectId={project.id}
+              trigger={
+                <Button variant="ghost" size="sm">
+                  <Edit className="h-4 w-4" />
+                </Button>
+              }
+            />
+          </div>
         </div>
       </CardHeader>
       <CardContent className="space-y-4">

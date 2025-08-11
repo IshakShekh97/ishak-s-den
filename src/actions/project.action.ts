@@ -21,6 +21,22 @@ interface CreateProjectData {
   liveLink?: string;
 }
 
+interface UpdateProjectData {
+  id: string;
+  title: string;
+  role: string;
+  client: string;
+  overview?: string;
+  year: number;
+  coverImage: string; // Pinata gateway URL
+  techStack: string[];
+  features?: { title: string; description: string }[];
+  tags: string[];
+  isFeatures: boolean;
+  githubLink?: string;
+  liveLink?: string;
+}
+
 export async function createProject(data: CreateProjectData) {
   try {
     const session = await auth.api.getSession({
@@ -44,7 +60,6 @@ export async function createProject(data: CreateProjectData) {
       projectOrder = (lastProject?.order || 0) + 1;
     }
 
-    // Create the project
     const project = await prisma.project.create({
       data: {
         title: data.title,
@@ -81,6 +96,70 @@ export async function createProject(data: CreateProjectData) {
   }
 }
 
+export async function updateProject(data: UpdateProjectData) {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session?.user?.id) {
+      return {
+        success: false,
+        message: "You must be logged in to update a project.",
+      };
+    }
+
+    // Verify the project belongs to the user
+    const existingProject = await prisma.project.findFirst({
+      where: {
+        id: data.id,
+        userId: session.user.id,
+      },
+    });
+
+    if (!existingProject) {
+      return {
+        success: false,
+        message: "Project not found or you don't have permission to update it.",
+      };
+    }
+
+    const project = await prisma.project.update({
+      where: { id: data.id },
+      data: {
+        title: data.title,
+        role: data.role,
+        client: data.client,
+        overview: data.overview || null,
+        year: data.year,
+        coverImage: data.coverImage,
+        techStack: JSON.stringify(data.techStack),
+        features: data.features ? JSON.stringify(data.features) : null,
+        tags: JSON.stringify(data.tags),
+        isFeatures: data.isFeatures,
+        githubLink: data.githubLink || null,
+        liveLink: data.liveLink || null,
+      },
+    });
+
+    revalidatePath("/dashboard");
+    revalidatePath("/projects");
+
+    return {
+      success: true,
+      message: "Project updated successfully!",
+      projectId: project.id,
+      previousCoverImage: existingProject.coverImage,
+    };
+  } catch (error) {
+    console.error("Update project error:", error);
+    return {
+      success: false,
+      message: "Failed to update project. Please try again.",
+    };
+  }
+}
+
 export async function getProjects() {
   try {
     const session = await auth.api.getSession({
@@ -110,6 +189,49 @@ export async function getProjects() {
       success: false,
       message: "Failed to fetch projects.",
       projects: [],
+    };
+  }
+}
+
+export async function getProjectById(projectId: string) {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session?.user?.id) {
+      return {
+        success: false,
+        message: "You must be logged in to view projects.",
+        project: null,
+      };
+    }
+
+    const project = await prisma.project.findFirst({
+      where: {
+        id: projectId,
+        userId: session.user.id,
+      },
+    });
+
+    if (!project) {
+      return {
+        success: false,
+        message: "Project not found or you don't have permission to view it.",
+        project: null,
+      };
+    }
+
+    return {
+      success: true,
+      project,
+    };
+  } catch (error) {
+    console.error("Get project by ID error:", error);
+    return {
+      success: false,
+      message: "Failed to fetch project.",
+      project: null,
     };
   }
 }

@@ -67,7 +67,6 @@ const CreateProjectForm = () => {
       isFeatures: false,
       githubLink: "",
       liveLink: "",
-      coverImage: new File([], ""),
     },
   });
 
@@ -126,7 +125,6 @@ const CreateProjectForm = () => {
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
     try {
-      // Upload cover image to Pinata if it's a File
       let coverImageUrl: string;
       if (data.coverImage instanceof File) {
         if (!data.coverImage || data.coverImage.size === 0) {
