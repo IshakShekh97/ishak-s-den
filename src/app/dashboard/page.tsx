@@ -25,7 +25,7 @@ type Project = {
   client: string;
   overview: string | null;
   year: number;
-  coverImage: Uint8Array | null;
+  coverImage: string;
   techStack: string;
   features: string | null;
   tags: string;
@@ -102,6 +102,16 @@ const ProjectCard = ({ project }: { project: Project }) => {
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
+        {project.coverImage && (
+          <div className="w-full aspect-video overflow-hidden rounded-md border">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={project.coverImage}
+              alt={project.title}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        )}
         {project.overview && (
           <p className="text-sm text-muted-foreground line-clamp-3">
             {project.overview}

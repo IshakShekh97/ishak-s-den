@@ -1,4 +1,3 @@
-"use client";
 import Hero from "@/components/home/Hero";
 import About from "@/components/home/About";
 import CTA from "@/components/home/CTA";
@@ -8,8 +7,25 @@ import Speciality from "@/components/home/Speciality";
 import { Footer } from "@/components/Footer";
 import { SeparationSection } from "@/components/home/ScrollSeprator";
 import { SocialLinks } from "@/components/home/SocialLinks";
+import prisma from "@/lib/prisma";
 
-export default function Home() {
+export default async function Home() {
+  const featuredProjects = await prisma.project.findMany({
+    where: {
+      isFeatures: true,
+    },
+    select: {
+      title: true,
+      coverImage: true,
+      githubLink: true,
+      liveLink: true,
+      isFeatures: true,
+      role: true,
+      year: true,
+      id: true,
+    },
+  });
+
   return (
     <>
       <div className="relative min-h-screen w-full overflow-hidden">
@@ -17,7 +33,7 @@ export default function Home() {
           <Hero />
           <SeparationSection />
           <About />
-          <Projects />
+          <Projects featuredProjects={featuredProjects} />
           <TechStack />
           <Speciality />
           <SocialLinks />

@@ -11,7 +11,7 @@ interface CreateProjectData {
   client: string;
   overview?: string;
   year: number;
-  coverImage: File;
+  coverImage: string; // Pinata gateway URL
   techStack: string[];
   features?: { title: string; description: string }[];
   tags: string[];
@@ -34,7 +34,6 @@ export async function createProject(data: CreateProjectData) {
       };
     }
 
-    // Get the next order number if not provided
     let projectOrder = data.order;
     if (projectOrder === undefined || projectOrder === 0) {
       const lastProject = await prisma.project.findFirst({
@@ -45,10 +44,6 @@ export async function createProject(data: CreateProjectData) {
       projectOrder = (lastProject?.order || 0) + 1;
     }
 
-    // Convert File to Buffer for coverImage
-    const arrayBuffer = await data.coverImage.arrayBuffer();
-    const coverImageBuffer = Buffer.from(arrayBuffer);
-
     // Create the project
     const project = await prisma.project.create({
       data: {
@@ -57,7 +52,7 @@ export async function createProject(data: CreateProjectData) {
         client: data.client,
         overview: data.overview || null,
         year: data.year,
-        coverImage: coverImageBuffer,
+        coverImage: data.coverImage,
         techStack: JSON.stringify(data.techStack),
         features: data.features ? JSON.stringify(data.features) : null,
         tags: JSON.stringify(data.tags),

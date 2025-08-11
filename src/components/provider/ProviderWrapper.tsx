@@ -13,9 +13,11 @@ const ProviderWrapper = ({ children }: { children?: React.ReactNode }) => {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <Preloader />
+      <div className="hidden md:block">
+        <SmoothCursor />
+      </div>
       {!isLoading && (
         <SmoothScrollProvider>
-          <div className="hidden md:block">{/* <SmoothCursor /> */}</div>
           <NavBar />
           {children}
           <Toaster />

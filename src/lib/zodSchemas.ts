@@ -23,10 +23,6 @@ export const signInSchema = z.object({
     .min(8, { message: "Password must be at least 8 characters." }),
 });
 
-export type SignUpSchemaType = z.infer<typeof signUpSchema>;
-export type SignInSchemaType = z.infer<typeof signInSchema>;
-
-// Project schema
 export const createProjectSchema = z.object({
   title: z.string().min(1, { message: "Title is required." }),
   role: z.string().min(1, { message: "Role is required." }),
@@ -39,16 +35,21 @@ export const createProjectSchema = z.object({
       message: "Please enter a valid year.",
     }),
   coverImage: z
-    .instanceof(File)
-    .refine((file) => file.size > 0, {
-      message: "Cover image is required.",
-    })
-    .refine((file) => file.size <= 5 * 1024 * 1024, {
-      message: "Cover image must be less than 5MB.",
-    })
-    .refine((file) => file.type.startsWith("image/"), {
-      message: "Cover image must be an image file.",
-    }),
+    .union([
+      z
+        .instanceof(File)
+        .refine((file) => file.size > 0, {
+          message: "Cover image is required.",
+        })
+        .refine((file) => file.size <= 5 * 1024 * 1024, {
+          message: "Cover image must be less than 5MB.",
+        })
+        .refine((file) => file.type.startsWith("image/"), {
+          message: "Cover image must be an image file.",
+        }),
+      z.string().url({ message: "Cover image URL must be valid." }),
+    ])
+    .transform((val) => val),
   techStack: z.array(z.string()).min(1, {
     message: "At least one technology is required.",
   }),
@@ -66,7 +67,6 @@ export const createProjectSchema = z.object({
     message: "At least one tag is required.",
   }),
   isFeatures: z.boolean().default(false),
-  order: z.number().min(0).default(0),
   githubLink: z
     .string()
     .optional()
@@ -99,4 +99,6 @@ export const createProjectSchema = z.object({
     ),
 });
 
+export type SignUpSchemaType = z.infer<typeof signUpSchema>;
+export type SignInSchemaType = z.infer<typeof signInSchema>;
 export type CreateProjectSchemaType = z.infer<typeof createProjectSchema>;

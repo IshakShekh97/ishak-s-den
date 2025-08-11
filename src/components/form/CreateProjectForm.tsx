@@ -40,10 +40,9 @@ type FormData = {
   techStack: string[];
   tags: string[];
   overview?: string;
-  coverImage: File;
+  coverImage: File | string;
   features?: Array<{ title: string; description: string }>;
   isFeatures?: boolean;
-  order?: number;
   githubLink?: string;
   liveLink?: string;
 };
@@ -66,7 +65,6 @@ const CreateProjectForm = () => {
       features: [],
       tags: [],
       isFeatures: false,
-      order: 0,
       githubLink: "",
       liveLink: "",
       coverImage: new File([], ""),
@@ -113,16 +111,48 @@ const CreateProjectForm = () => {
     );
   };
 
+  const uploadToPinata = async (file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await fetch("/api/files", { method: "POST", body: formData });
+    if (!res.ok) {
+      throw new Error("Failed to upload image");
+    }
+    const json = await res.json();
+    const url = json?.url ?? json;
+    return typeof url === "string" ? url : String(url);
+  };
+
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
     try {
-      // Ensure isFeatures is always a boolean and order is auto-incremented if 0
-      const fixedData = {
-        ...data,
+      // Upload cover image to Pinata if it's a File
+      let coverImageUrl: string;
+      if (data.coverImage instanceof File) {
+        if (!data.coverImage || data.coverImage.size === 0) {
+          throw new Error("Cover image is required");
+        }
+        coverImageUrl = await uploadToPinata(data.coverImage);
+      } else {
+        coverImageUrl = data.coverImage;
+      }
+
+      const payload = {
+        title: data.title,
+        role: data.role,
+        client: data.client,
+        overview: data.overview,
+        year: data.year,
+        coverImage: coverImageUrl,
+        techStack: data.techStack,
+        features: data.features,
+        tags: data.tags,
         isFeatures: data.isFeatures ?? false,
-        order: data.order === 0 ? undefined : data.order, // Let server auto-increment if 0
+        githubLink: data.githubLink,
+        liveLink: data.liveLink,
       };
-      const result = await createProject(fixedData);
+
+      const result = await createProject(payload);
 
       if (result.success) {
         toast.success(result.message);
@@ -454,30 +484,6 @@ const CreateProjectForm = () => {
                                 onCheckedChange={field.onChange}
                               />
                             </FormControl>
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="order"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Display Order</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="number"
-                                placeholder="0"
-                                {...field}
-                                onChange={(e) =>
-                                  field.onChange(parseInt(e.target.value))
-                                }
-                              />
-                            </FormControl>
-                            <FormDescription>
-                              Lower numbers appear first
-                            </FormDescription>
-                            <FormMessage />
                           </FormItem>
                         )}
                       />

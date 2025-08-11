@@ -75,7 +75,7 @@ model Project {
   client     String
   overview   String?
   year       Int
-  coverImage Bytes
+  coverImage String
   techStack  String // JSON array of strings
   features   String? // JSON array of {title: string, description: string}
   tags       String // JSON array of strings
