@@ -31,7 +31,7 @@ export function NavBar() {
 
   const pathName = usePathname();
   return (
-    <div className="fixed bottom-2 left-0 right-0 z-50 flex justify-center">
+    <div className="fixed top-2 left-0 right-0 z-50 flex justify-center">
       <TooltipProvider>
         <Dock iconMagnification={60} iconDistance={100}>
           {navItems.map((item) => (
