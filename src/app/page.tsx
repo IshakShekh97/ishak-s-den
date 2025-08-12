@@ -24,6 +24,9 @@ export default async function Home() {
       year: true,
       id: true,
     },
+    orderBy: {
+      order: "asc",
+    },
   });
 
   return (

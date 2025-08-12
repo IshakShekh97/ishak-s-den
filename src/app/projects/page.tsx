@@ -1,21 +1,17 @@
-"use client";
-import { motion } from "framer-motion";
-import React from "react";
+import React, { Suspense } from "react";
 import { Code } from "lucide-react";
 import TextReveal, { TextRevealChars } from "@/components/animated/text-reveal";
+import prisma from "@/lib/prisma";
+import { cn } from "@/lib/utils";
+import { ProjectCard } from "@/components/ProjectCard";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ProjectsPage = () => {
   return (
-    <section id="projects" className="relative py-20 bg-background">
+    <section id="projects" className="relative py-20 ">
       <div className="container mx-auto px-4">
         <div className="max-w-7xl mx-auto">
-          <motion.div
-            className="flex items-center gap-2 mb-5 justify-start"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
+          <div className="flex items-center gap-2 mb-5 justify-start">
             <Code className="text-primary size-6" />
             <TextRevealChars
               text="PROJECTS"
@@ -24,98 +20,104 @@ const ProjectsPage = () => {
               duration={0.4}
               staggerDelay={0.05}
             />
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
+          <div>
             <TextReveal
               text="A selection of featured projects that highlight my expertise and results."
               className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl"
               delay={0.6}
               duration={0.8}
             />
-
-            {/* {dataState == "loading" && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-16">
-                {[1, 2, 3, 4].map((_, index) => (
-                  <motion.div
-                    key={index}
-                    className={cn(
-                      "group",
-                      index % 2 === 0 ? "lg:mt-0" : "lg:mt-10",
-                      "hover:translate-y-2 transition-transform duration-300"
-                    )}
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8, delay: 0.2 + index * 0.1 }}
-                  >
-                    <div className="rounded-3xl overflow-hidden relative bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20 p-8 mb-6 aspect-[16/10]">
-                      <Skeleton className="w-full h-full" />
-                    </div>
-                    <div className="px-2">
-                      <Skeleton className="h-8 w-3/4 mb-2" />
-                      <Skeleton className="h-4 w-1/2 mb-4" />
-                      <Skeleton className="h-4 w-full mb-2" />
-                      <Skeleton className="h-4 w-2/3 mb-6" />
-
-                      <div className="flex items-center justify-between">
-                        <div className="flex gap-2">
-                          {[1, 2, 3].map((_, tagIndex) => (
-                            <Skeleton
-                              key={tagIndex}
-                              className="h-6 w-16 rounded-full"
-                            />
-                          ))}
-                        </div>
-                        <div className="flex gap-2">
-                          <Skeleton className="h-8 w-8 rounded" />
-                          <Skeleton className="h-8 w-8 rounded" />
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            )}
-
-            {dataState === "error" && (
-              <div className="flex justify-center items-center h-96 text-destructive text-lg font-semibold mt-16">
-                Error loading projects
-              </div>
-            )}
-
-            {dataState === "loaded" &&
-              portfolioData &&
-              portfolioData.length === 0 && (
-                <div className="flex justify-center items-center h-96 text-muted-foreground text-lg font-semibold mt-16">
-                  No projects available
-                </div>
-              )}
-
-            {dataState === "loaded" && portfolioData && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-16 ">
-                {portfolioData.map((project, index) => (
-                  <ProjectCard
-                    key={index}
-                    project={project}
-                    index={index}
-                    className={cn(
-                      index % 2 === 0 ? "lg:mt-0" : "lg:mt-10",
-                      "hover:translate-y-2 transition-transform duration-300"
-                    )}
-                  />
-                ))}
-              </div>
-            )} */}
-          </motion.div>
+          </div>
+        </div>
+      </div>
+      <div className="bg-background mt-5">
+        <div className="container mx-auto px-4">
+          <div className="max-w-7xl mx-auto py-10">
+            <Suspense fallback={<CardSkeleton />}>
+              <ProjectsGrid />
+            </Suspense>
+          </div>
         </div>
       </div>
     </section>
+  );
+};
+
+const ProjectsGrid = async () => {
+  const projects = await prisma.project.findMany({
+    select: {
+      title: true,
+      coverImage: true,
+      githubLink: true,
+      liveLink: true,
+      isFeatures: true,
+      role: true,
+      year: true,
+      id: true,
+    },
+    orderBy: {
+      order: "asc",
+    },
+  });
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12">
+      {projects.map((project, index) => (
+        <ProjectCard
+          key={project.id}
+          index={index}
+          title={project.title}
+          coverImage={project.coverImage}
+          githubLink={project.githubLink}
+          liveLink={project.liveLink}
+          isFeatures={project.isFeatures}
+          role={project.role}
+          year={project.year}
+          id={project.id}
+          className={cn(
+            index % 2 === 0 ? "lg:mt-0" : "lg:mt-10",
+            "hover:translate-y-2 transition-transform duration-300"
+          )}
+        />
+      ))}
+    </div>
+  );
+};
+
+const CardSkeleton = () => {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+      {Array.from({ length: 6 }).map((_, index) => (
+        <div key={index} className="group cursor-pointer">
+          <div className="block pb-5">
+            <div className="rounded-2xl overflow-hidden relative aspect-video">
+              <Skeleton className="w-full h-full rounded-2xl" />
+            </div>
+          </div>
+
+          <div className="px-2">
+            <div className="flex items-end justify-between mb-1">
+              <div className="flex-1">
+                <Skeleton className="h-6 w-3/4 mb-2" />
+                <Skeleton className="h-4 w-1/2" />
+              </div>
+              <Skeleton className="h-4 w-12" />
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between mt-5">
+            <Skeleton className="h-6 w-20" />
+            <div className="flex items-center justify-center gap-3">
+              <Skeleton className="h-8 w-8 rounded-md" />
+              <Skeleton className="h-8 w-8 rounded-md" />
+              <Skeleton className="h-8 w-8 rounded-md" />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
   );
 };
 
