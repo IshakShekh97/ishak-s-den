@@ -19,7 +19,7 @@ const ProviderWrapper = ({ children }: { children?: React.ReactNode }) => {
       {!isLoading && (
         <SmoothScrollProvider>
           <NavBar />
-          {children}
+          <div className="mt-10">{children}</div>
           <Toaster />
         </SmoothScrollProvider>
       )}

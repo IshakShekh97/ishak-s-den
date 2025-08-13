@@ -1,9 +1,11 @@
 import MagneticButton from "@/components/animated/magnetic-button";
 import TextReveal, { TextRevealChars } from "@/components/animated/text-reveal";
 import { ImageLoader } from "@/components/image-loader";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import prisma from "@/lib/prisma";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, DotIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -72,10 +74,10 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
             />
           </div>
 
-          <div className="flex items-center flex-row gap-2 mb-5 justify-center md:justify-between flex-wrap my-5 mt-10">
+          <div className="flex items-center flex-row gap-2 mb-5 md:justify-between flex-wrap my-5 mt-10">
             <TextRevealChars
               text={project.title}
-              className="text-4xl sm:text-5xl xl:text-6xl font-black text-primary"
+              className="text-4xl sm:text-5xl xl:text-6xl font-black"
               delay={0.5}
               duration={0.4}
               staggerDelay={0.05}
@@ -84,13 +86,13 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
               <MagneticButton
                 size={"icon"}
                 className="md:hidden"
-                variant={"secondary"}
+                variant={"primary"}
               >
                 <ArrowUpRight className="size-5" />
               </MagneticButton>
               <MagneticButton
                 size={"lg"}
-                variant={"secondary"}
+                variant={"primary"}
                 className="max-md:hidden"
               >
                 Check It Out <ArrowUpRight className="size-5" />
@@ -98,13 +100,60 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
             </Link>
           </div>
 
-          <div>
+          <div className="grid md:grid-cols-3 md:gap-20 gap-5">
             <TextReveal
               text={project.overview as string}
-              className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-full"
+              className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-full md:col-span-2 "
               delay={0.6}
               duration={0.8}
             />
+            <div className="md:col-span-1 flex items-start justify-start flex-col">
+              <div className="font-bold">
+                Roles :{" "}
+                <span className="text-muted-foreground font-semibold">
+                  {project.role as string}
+                </span>
+              </div>
+              <div className="font-black">
+                Client :{" "}
+                <span className="text-muted-foreground font-semibold">
+                  {project.client as string}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex-wrap flex items-center my-5 gap-2">
+            {project.tags &&
+              JSON.parse(project.tags as string).map(
+                (tag: string, index: number) => (
+                  <Badge
+                    key={index}
+                    variant="secondary"
+                    className="px-4 py-2 rounded-xl"
+                  >
+                    {tag}
+                  </Badge>
+                )
+              )}
+          </div>
+
+          <div className="my-10">
+            <h1 className="text-4xl font-bold tracking-tight ">Tech Stack</h1>
+            <Separator className="mt-2" />
+
+            <div className="flex flex-col">
+              <ul className="mt-4 space-y-2">
+                {project.techStack &&
+                  JSON.parse(project.techStack as string).map(
+                    (tech: string, index: number) => (
+                      <li key={index} className="text-lg flex items-center">
+                        <DotIcon /> {tech}
+                      </li>
+                    )
+                  )}
+              </ul>
+            </div>
           </div>
         </div>
       </div>
