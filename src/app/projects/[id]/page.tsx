@@ -13,7 +13,7 @@ const fetchProject = async (id: string) => {
   try {
     const response = await prisma.project.findUnique({
       where: {
-        id,
+        id: id,
       },
     });
 
