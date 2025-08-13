@@ -16,11 +16,7 @@ const fetchProject = async (id: string) => {
         id: id,
       },
     });
-
-    if (response) {
-      return response;
-    }
-    return null;
+    return response;
   } catch (err) {
     console.log(err);
     return null;
