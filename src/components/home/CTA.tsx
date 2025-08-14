@@ -27,15 +27,15 @@ export default function CTA() {
           </p>
 
           <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-            <MagneticButton
-              icon={<Mail />}
-              variant={"primary"}
-              className="bg-black"
-            >
-              <Link href={"/contact"} className="w-full relative z-50">
+            <Link href={"/contact"} className="w-full relative z-50">
+              <MagneticButton
+                icon={<Mail />}
+                variant={"primary"}
+                className="bg-black"
+              >
                 Send A Message
-              </Link>
-            </MagneticButton>
+              </MagneticButton>
+            </Link>
           </div>
         </div>
       </div>
