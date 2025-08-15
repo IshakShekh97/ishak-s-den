@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Dock, DockIcon } from "@/components/dock";
-import { Home, FolderKanban, Mail, User } from "lucide-react";
+import { Home, FolderKanban, Mail, User, LogOut } from "lucide-react";
 import Link from "next/link";
 import ThemeToggleButton from "@/components/animated/theme-toggle-button";
 import {
@@ -13,8 +13,8 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "../ui/button";
-import { usePathname } from "next/navigation";
-import { useSession } from "@/lib/auth-client";
+import { redirect, usePathname } from "next/navigation";
+import { authClient, useSession } from "@/lib/auth-client";
 import { MdDashboard } from "react-icons/md";
 
 export type IconProps = React.HTMLAttributes<SVGElement>;
@@ -60,28 +60,49 @@ export function NavBar() {
           ))}
 
           {data?.user && (
-            <DockIcon className="bg-black/10 dark:bg-white/10">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Link
-                    href="/dashboard"
-                    aria-label="Dashboard"
+            <>
+              <DockIcon className="bg-black/10 dark:bg-white/10">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Link
+                      href="/dashboard"
+                      aria-label="Dashboard"
+                      className={cn(
+                        buttonVariants({ size: "icon" }),
+                        "size-10 rounded-full",
+                        pathName === "/dashboard"
+                          ? "bg-primary text-primary-foreground"
+                          : "text-muted-foreground bg-secondary hover:bg-secondary/50 dark:hover:bg-secondary/50"
+                      )}
+                    >
+                      <MdDashboard className="size-4" />
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Dashboard</p>
+                  </TooltipContent>
+                </Tooltip>
+              </DockIcon>
+              <DockIcon className="bg-black/10 dark:bg-white/10">
+                <Tooltip>
+                  <TooltipTrigger
+                    onClick={async () => {
+                      await authClient.signOut();
+                      redirect("/sign-in");
+                    }}
                     className={cn(
-                      buttonVariants({ size: "icon" }),
-                      "size-10 rounded-full",
-                      pathName === "/dashboard"
-                        ? "bg-primary text-primary-foreground"
-                        : "text-muted-foreground bg-secondary hover:bg-secondary/50 dark:hover:bg-secondary/50"
+                      buttonVariants({ size: "icon", variant: "destructive" }),
+                      "size-10 rounded-full"
                     )}
                   >
-                    <MdDashboard className="size-4" />
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Dashboard</p>
-                </TooltipContent>
-              </Tooltip>
-            </DockIcon>
+                    <LogOut className="size-4" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Log Out</p>
+                  </TooltipContent>
+                </Tooltip>
+              </DockIcon>
+            </>
           )}
 
           <DockIcon>

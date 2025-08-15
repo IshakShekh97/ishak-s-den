@@ -85,9 +85,11 @@ const Projects = ({ featuredProjects }: ProjectCardProps) => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.8 }}
             >
-              <MagneticButton variant="secondary">
-                <Link href="/projects">View All Projects</Link>
-              </MagneticButton>
+              <Link href="/projects">
+                <MagneticButton variant="secondary">
+                  View All Projects
+                </MagneticButton>
+              </Link>
             </motion.div>
           </motion.div>
         </div>

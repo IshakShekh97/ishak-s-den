@@ -107,7 +107,7 @@ const page = () => {
       <div className="relative min-h-screen w-full overflow-hidden bg-background">
         <main className="relative z-10">
           {/* Hero Section */}
-          <section className="relative min-h-screen flex items-center justify-center px-4 py-24 bg-background overflow-hidden">
+          <section className="relative min-h-screen flex px-4 py-24 bg-background overflow-hidden">
             <motion.div
               className="w-full max-w-6xl mx-auto flex flex-col items-center gap-12 z-10 relative"
               variants={containerVariants}
