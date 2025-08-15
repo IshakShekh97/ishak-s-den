@@ -259,7 +259,6 @@ const EditProjectForm = ({ projectId, trigger }: EditProjectFormProps) => {
       if (result.success) {
         toast.success(result.message);
         setIsOpen(false);
-        // Optionally trigger a refresh of the parent component
       } else {
         toast.error(result.message);
       }

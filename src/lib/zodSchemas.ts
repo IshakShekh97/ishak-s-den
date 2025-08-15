@@ -176,7 +176,12 @@ export const updateProjectSchema = z.object({
     ),
 });
 
+export const deleteProjectSchema = z.object({
+  id: z.string().min(1, { message: "Project ID is required." }),
+});
+
 export type SignUpSchemaType = z.infer<typeof signUpSchema>;
 export type SignInSchemaType = z.infer<typeof signInSchema>;
 export type CreateProjectSchemaType = z.infer<typeof createProjectSchema>;
 export type UpdateProjectSchemaType = z.infer<typeof updateProjectSchema>;
+export type DeleteProjectSchemaType = z.infer<typeof deleteProjectSchema>;

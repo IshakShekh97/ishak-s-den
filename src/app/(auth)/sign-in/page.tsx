@@ -46,7 +46,6 @@ export default function SignInPage() {
         router.push("/dashboard");
       } else {
         toast.error(response.message);
-        console.log(response.message);
       }
     } catch (error) {
       console.error("Sign in error:", error);

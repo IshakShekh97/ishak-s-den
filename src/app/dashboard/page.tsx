@@ -11,15 +11,11 @@ import prisma from "@/lib/prisma";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import {
-  Star,
-  ExternalLink,
-  Github,
-  Calendar,
-  User,
-  Building,
-  Edit,
-} from "lucide-react";
+import { Edit } from "lucide-react";
+import DeleteProjectForm from "@/components/form/DeleteProjectForm";
+import { ImageLoader } from "@/components/image-loader";
+import Link from "next/link";
+import MagneticButton from "@/components/animated/magnetic-button";
 
 type Project = {
   id: string;
@@ -70,117 +66,78 @@ async function getProjects(userId: string) {
 }
 
 const ProjectCard = ({ project }: { project: Project }) => {
-  const techStack = JSON.parse(project.techStack || "[]");
-  const tags = JSON.parse(project.tags || "[]");
-
   return (
-    <Card className="h-full">
-      <CardHeader>
-        <div className="flex items-start justify-between">
-          <div className="flex-1">
-            <div className="flex items-center gap-2 mb-2">
-              <CardTitle className="text-xl">{project.title}</CardTitle>
-              {project.isFeatures && (
-                <Star className="h-5 w-5 text-yellow-500 fill-current" />
-              )}
-            </div>
-            <div className="flex items-center gap-4 text-sm text-muted-foreground mb-2">
-              <div className="flex items-center gap-1">
-                <User className="h-4 w-4" />
-                {project.role}
-              </div>
-              <div className="flex items-center gap-1">
-                <Building className="h-4 w-4" />
+    <div className="group cursor-pointer">
+      <div className="block pb-5 group">
+        <div className="rounded-2xl overflow-hidden relative aspect-video transition-all duration-500 group-hover:scale-[1.02]">
+          <ImageLoader
+            src={project.coverImage ? project.coverImage : "/placeholder.svg"}
+            alt={project.title}
+            className="w-full h-full rounded-2xl group-hover:blur-sm transition-all duration-500 ease-in-out"
+            objectFit="cover"
+            width="100%"
+            height="100%"
+          />
+          <Link
+            href={`/projects/${project.id}`}
+            className="hidden absolute inset-0 bg-black/30 group-hover:flex transition-all duration-500 ease-in-out items-center justify-center"
+          >
+            <MagneticButton className="group-hover:scale-105 transition-transform duration-500 ease-in-out">
+              View Project
+            </MagneticButton>
+          </Link>
+        </div>
+      </div>
+
+      <div className="px-2">
+        <div className="block">
+          <div className="flex items-end justify-between mb-1">
+            <div>
+              <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">
+                {project.title}
+              </h3>
+              <p className="text-muted-foreground text-xs leading-relaxed">
                 {project.client}
-              </div>
-              <div className="flex items-center gap-1">
-                <Calendar className="h-4 w-4" />
-                {project.year}
-              </div>
+              </p>
             </div>
+            <span className="text-muted-foreground text-xs font-medium">
+              {project.year}
+            </span>
           </div>
-          <div className="flex items-center gap-2">
-            <Badge variant="outline" className="ml-2">
-              #{project.order}
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between mt-5">
+        <div>
+          {project.isFeatures && (
+            <Badge
+              variant="outline"
+              className="bg-muted text-muted-foreground text-xs font-medium py-1 px-2 rounded-md"
+            >
+              Featured
             </Badge>
-            <EditProjectForm
-              projectId={project.id}
-              trigger={
-                <Button variant="ghost" size="sm">
-                  <Edit className="h-4 w-4" />
-                </Button>
-              }
-            />
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {project.coverImage && (
-          <div className="w-full aspect-video overflow-hidden rounded-md border">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={project.coverImage}
-              alt={project.title}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        )}
-        {project.overview && (
-          <p className="text-sm text-muted-foreground line-clamp-3">
-            {project.overview}
-          </p>
-        )}
-
-        <div className="space-y-3">
-          <div>
-            <h4 className="text-sm font-medium mb-2">Technologies</h4>
-            <div className="flex flex-wrap gap-1">
-              {techStack.map((tech: string, index: number) => (
-                <Badge key={index} variant="secondary" className="text-xs">
-                  {tech}
-                </Badge>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <h4 className="text-sm font-medium mb-2">Tags</h4>
-            <div className="flex flex-wrap gap-1">
-              {tags.map((tag: string, index: number) => (
-                <Badge key={index} variant="outline" className="text-xs">
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="flex gap-2 pt-2">
-          {project.githubLink && (
-            <a
-              href={project.githubLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <Github className="h-3 w-3" />
-              GitHub
-            </a>
-          )}
-          {project.liveLink && (
-            <a
-              href={project.liveLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <ExternalLink className="h-3 w-3" />
-              Live Demo
-            </a>
           )}
         </div>
-      </CardContent>
-    </Card>
+        <div className="flex items-center justify-center gap-3">
+          <MagneticButton size="icon" variant={"secondary"}>
+            # {project.order}
+          </MagneticButton>
+        </div>
+      </div>
+
+      {/* Admin controls */}
+      <div className="flex items-center justify-center flex-col gap-2 w-full mt-4 pt-4 border-t">
+        <EditProjectForm
+          projectId={project.id}
+          trigger={
+            <Button variant="secondary" size="lg" className="w-full">
+              <Edit className="h-4 w-4" /> Edit
+            </Button>
+          }
+        />
+        <DeleteProjectForm projectId={project.id} />
+      </div>
+    </div>
   );
 };
 
@@ -240,7 +197,7 @@ const DashboardPage = async () => {
         </TabsList>
 
         <TabsContent value="projects" className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2  gap-6">
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Total Projects</CardTitle>
@@ -266,36 +223,74 @@ const DashboardPage = async () => {
                 </p>
               </CardContent>
             </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Screenshots</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold">0</div>
-                <p className="text-sm text-muted-foreground">
-                  Total design screenshots
-                </p>
-              </CardContent>
-            </Card>
           </div>
 
           <div>
             <h2 className="text-xl font-semibold mb-4">All Projects</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {projects.data.map((project: Project) => (
-                <ProjectCard key={project.id} project={project} />
-              ))}
-            </div>
+            <Suspense fallback={<ProjectCardSkeleton />}>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {projects.data.map((project: Project) => (
+                  <ProjectCard key={project.id} project={project} />
+                ))}
+              </div>
+            </Suspense>
           </div>
         </TabsContent>
 
         <TabsContent value="order" className="space-y-6">
-          <ProjectOrderManager projects={projects.data} />
+          <Suspense fallback={<ProjectOrderManagerSkeleton />}>
+            <ProjectOrderManager projects={projects.data} />
+          </Suspense>
         </TabsContent>
       </Tabs>
     </div>
   );
 };
+
+function ProjectCardSkeleton() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {Array.from({ length: 6 }).map((_, index) => (
+        <Card key={index} className="h-full">
+          <CardHeader>
+            <Skeleton className="h-6 w-3/4 mb-2" />
+            <Skeleton className="h-4 w-1/2" />
+          </CardHeader>
+          <CardContent>
+            <Skeleton className="h-40 w-full mb-4" />
+            <Skeleton className="h-4 w-full mb-2" />
+            <Skeleton className="h-4 w-full mb-2" />
+            <Skeleton className="h-4 w-full" />
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+}
+
+function ProjectOrderManagerSkeleton() {
+  return (
+    <div className="space-y-4">
+      <h2 className="text-xl font-semibold mb-2">Manage Project Order</h2>
+      <p className="text-muted-foreground mb-4">
+        Drag and drop to reorder your projects. Changes will be saved
+        automatically.
+      </p>
+      <Skeleton className="h-6 w-1/2 mb-4" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {Array.from({ length: 6 }).map((_, index) => (
+          <Card key={index} className="h-full">
+            <CardHeader>
+              <Skeleton className="h-6 w-3/4 mb-2" />
+            </CardHeader>
+            <CardContent>
+              <Skeleton className="h-40 w-full mb-4" />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default DashboardPage;

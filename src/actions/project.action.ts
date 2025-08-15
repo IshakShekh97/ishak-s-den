@@ -329,3 +329,37 @@ export async function reorderProjects(
     };
   }
 }
+
+export async function deleteProject(projectId: string) {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session?.user?.id) {
+      return {
+        success: false,
+        message: "You must be logged in to Delete a project.",
+      };
+    }
+
+    await prisma.project.delete({
+      where: {
+        id: projectId,
+      },
+    });
+
+    revalidatePath("/dashboard");
+    revalidatePath("/projects");
+    return {
+      success: true,
+      message: "Project deleted successfully.",
+    };
+  } catch (error) {
+    console.error("Delete project error:", error);
+    return {
+      success: false,
+      message: "Failed to delete project.",
+    };
+  }
+}
