@@ -125,7 +125,7 @@ export default function Contact() {
     <>
       <section
         id="contact"
-        className="relative py-20 bg-background overflow-hidden"
+        className="relative py-20 pt-40 bg-background overflow-hidden"
       >
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">

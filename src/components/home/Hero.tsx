@@ -76,7 +76,7 @@ export default function Hero() {
       id="home"
       ref={ref}
       onMouseMove={handleMouseMove}
-      className="relative min-h-full flex items-center justify-center px-4 py-24 bg-background overflow-hidden"
+      className="relative min-h-full flex items-center justify-center px-4 py-24 pt-40 bg-background overflow-hidden"
       style={{ perspective: "1000px" }}
     >
       <motion.div

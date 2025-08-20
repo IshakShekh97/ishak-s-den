@@ -8,7 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const ProjectsPage = () => {
   return (
-    <section id="projects" className="relative py-20 ">
+    <section id="projects" className="relative py-20 pt-40 ">
       <div className="container mx-auto px-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-2 mb-5 justify-start">
