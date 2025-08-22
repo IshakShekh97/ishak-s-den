@@ -17,9 +17,9 @@
 
 ---
 
-## ✨ About Ishak's Den
+## ✨ About Rajnish's Den
 
-**Ishak's Den** is a modern, animated, and responsive portfolio website built with the latest web technologies. It showcases projects, skills, education, and contact information in a visually appealing and interactive way.
+**Rajnish's Den** is a modern, animated, and responsive portfolio website built with the latest web technologies. It showcases projects, skills, education, and contact information in a visually appealing and interactive way.
 
 ---
 
@@ -92,7 +92,7 @@ Pull requests are welcome! For major changes, please open an issue first to disc
 
 ## 📬 Contact
 
-- **Email:** shekhishak90@gmail.com
+- **Email:**rajniahraj91170@gmail.com
 - **Portfolio:** [ishak-den.vercel.app](https://ishak-den.vercel.app)
 
 ---
