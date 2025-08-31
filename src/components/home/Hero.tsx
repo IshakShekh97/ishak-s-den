@@ -60,7 +60,7 @@ export default function Hero() {
   return (
     <ImageCursorTrail
       items={portfolioImages}
-      className="min-h-[85vh] relative z-40 overflow-hidden"
+      className="min-h-[88vh] relative z-40 overflow-hidden"
       fadeAnimation={true}
       maxNumberOfImages={4}
       distance={15}
@@ -70,7 +70,7 @@ export default function Hero() {
     >
       <section
         id="home"
-        className="relative  flex items-center justify-center px-4 py-24 z-50"
+        className="relative flex items-center justify-center px-4 py-10 z-50"
       >
         <motion.div
           className="w-full max-w-4xl mx-auto flex flex-col items-center gap-8 text-center main-content"
@@ -79,7 +79,7 @@ export default function Hero() {
           animate="visible"
         >
           {/* Logo/Brand */}
-          <MagneticButton className="relative mb-6" variant={"primary"}>
+          <MagneticButton className="relative" variant={"primary"}>
             <div className="flex items-center gap-2 text-white">
               <Sparkle className="animate-pulse text-white" />
               <span

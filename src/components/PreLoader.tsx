@@ -55,7 +55,7 @@ const PreloaderInner = ({ onDone }: { onDone: () => void }) => {
     <AnimatePresence>
       {!isDone && (
         <motion.div
-          className="fixed inset-0 flex items-end justify-end text-primary z-[100]"
+          className="fixed inset-0 flex max-md:items-center max-md:justify-center items-end justify-end text-primary z-[100]"
           variants={preloaderVariants}
           initial="initial"
           animate="initial"

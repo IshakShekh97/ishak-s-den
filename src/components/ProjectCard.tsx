@@ -87,7 +87,7 @@ export const ProjectCard = ({
         </div>
         <div className="flex items-center justify-center gap-3">
           <MagneticButton size={"icon"}>
-            <Link href={liveLink || "#"} target="_blank">
+            <Link href={`/projects/${id}`}>
               <Code className="size-4" />
             </Link>
           </MagneticButton>
@@ -97,7 +97,7 @@ export const ProjectCard = ({
             </Link>
           </MagneticButton>
           <MagneticButton size={"icon"}>
-            <Link href={`/projects/${id}`} target="_blank">
+            <Link href={liveLink || "#"} target="_blank">
               <ArrowUpRight className="size-4" />
             </Link>
           </MagneticButton>
