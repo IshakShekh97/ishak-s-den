@@ -12,6 +12,8 @@ interface ImageMouseTrailProps {
   distance?: number;
   maxNumberOfImages?: number;
   fadeAnimation?: boolean;
+  disableOnContentHover?: boolean;
+  contentSelector?: string;
 }
 export default function ImageCursorTrail({
   items,
@@ -21,6 +23,8 @@ export default function ImageCursorTrail({
   imgClass = "w-40 h-48",
   distance = 20,
   fadeAnimation = false,
+  disableOnContentHover = true,
+  contentSelector = ".main-content, button, a, input, textarea, [role='button']",
 }: ImageMouseTrailProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const refs = useRef(items.map(() => createRef<HTMLImageElement>()));
@@ -28,6 +32,22 @@ export default function ImageCursorTrail({
 
   let globalIndex = 0;
   let last = { x: 0, y: 0 };
+
+  const isHoveringContent = (element: Element | null): boolean => {
+    if (!element || !disableOnContentHover) return false;
+
+    // Check if the element itself matches the selector
+    if (element.matches(contentSelector)) return true;
+
+    // Check if any parent element matches the selector
+    let parent = element.parentElement;
+    while (parent) {
+      if (parent.matches(contentSelector)) return true;
+      parent = parent.parentElement;
+    }
+
+    return false;
+  };
 
   const activate = (image: HTMLImageElement, x: number, y: number) => {
     const containerRect = containerRef.current?.getBoundingClientRect();
@@ -61,7 +81,13 @@ export default function ImageCursorTrail({
   };
 
   type Point = { clientX: number; clientY: number };
-  const handleOnMove = (e: Point) => {
+  const handleOnMove = (e: Point, event: MouseEvent | TouchEvent) => {
+    // Check if we're hovering over content that should disable the trail
+    const target = event.target as Element;
+    if (isHoveringContent(target)) {
+      return; // Don't activate trail when hovering over content
+    }
+
     if (distanceFromLast(e.clientX, e.clientY) > window.innerWidth / distance) {
       const lead = refs.current[globalIndex % refs.current.length].current;
       const tail =
@@ -76,12 +102,15 @@ export default function ImageCursorTrail({
   return (
     <section
       onMouseMove={(e) =>
-        handleOnMove({ clientX: e.clientX, clientY: e.clientY })
+        handleOnMove({ clientX: e.clientX, clientY: e.clientY }, e.nativeEvent)
       }
       onTouchMove={(e) => {
         if (e.touches && e.touches.length > 0) {
           const touch = e.touches[0];
-          handleOnMove({ clientX: touch.clientX, clientY: touch.clientY });
+          handleOnMove(
+            { clientX: touch.clientX, clientY: touch.clientY },
+            e.nativeEvent
+          );
         }
       }}
       ref={containerRef}
